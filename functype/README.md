@@ -1,3 +1,3 @@
-## fn-ts
+## functype
 
 A small functional library for TypeScript
