@@ -1,10 +1,10 @@
 {
   "name": "fn-ts",
   "version": "0.0.1",
-  "description": "A template for building a library with tsup",
+  "description": "A small functional library for TypeScript",
   "author": "jordan.burke@gmail.com",
   "license": "MIT",
-  "url": "https://github.com/orabazu/tsup-libary-template",
+  "url": "https://github.com/jordanburke/TypeScript/tree/main/fn-ts",
   "scripts": {
     "ts-types": "tsc",
     "build:dev": "rimraf lib && tsup --watch",
