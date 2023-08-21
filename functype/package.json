@@ -1,10 +1,10 @@
 {
-  "name": "fn-ts",
+  "name": "functype",
   "version": "0.0.1",
   "description": "A small functional library for TypeScript",
   "author": "jordan.burke@gmail.com",
   "license": "MIT",
-  "url": "https://github.com/jordanburke/TypeScript/tree/main/fn-ts",
+  "url": "https://github.com/jordanburke/TypeScript/tree/main/functype",
   "scripts": {
     "ts-types": "tsc",
     "build:dev": "rimraf lib && tsup --watch",
