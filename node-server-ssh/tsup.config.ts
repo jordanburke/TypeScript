@@ -4,7 +4,7 @@ const env = process.env.NODE_ENV
 
 export const tsup: Options = {
   splitting: true,
-  sourcemap: env === "prod", // source map is only available in prod
+  sourcemap: true, //env === "prod", // source map is only available in prod - Removed, why is the recommended?
   clean: true, // rimraf disr
   dts: true, // generate dts file for main module
   format: ["cjs", "esm"], // generate cjs and esm files

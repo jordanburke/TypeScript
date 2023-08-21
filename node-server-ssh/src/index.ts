@@ -2,12 +2,11 @@ import {timingSafeEqual} from "crypto"
 import {readFileSync} from "fs"
 import {inspect} from "util"
 import ssh2 from "ssh2"
-import { Socket } from "net";
 
 const {utils: {parseKey}, Server} = ssh2;
 
-const allowedUser = Buffer.from('foo')
-const allowedPassword = Buffer.from('bar')
+const allowedUser = Buffer.from('jordan')
+const allowedPassword = Buffer.from('password')
 const allowedPubKey = parseKey(readFileSync('node-server-ssh.pub'))
 
 const checkValue = (input, allowed) => {
@@ -59,6 +58,7 @@ new Server({
 
         client.on('session', (accept, reject) => {
             const session = accept()
+            console.log("accepted")
             session.once('exec', (accept, reject, info) => {
                 // @ts-ignore
                 console.log('Client wants to execute: ' + inspect(info.command))
@@ -72,6 +72,8 @@ new Server({
         });
     }).on('close', () => {
         console.log('Client disconnected')
+    }).on('error', () => {
+        console.error('Client Error')
     });
 }).listen(0, '127.0.0.1', function () {
     // @ts-ignore
