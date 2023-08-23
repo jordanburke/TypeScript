@@ -4,7 +4,7 @@
   "description": "A simple Zod Validation shim for NestJS ConfigService",
   "author": "jordan.burke@gmail.com",
   "license": "MIT",
-  "url": "https://github.com/jordanburke/TypeScript/tree/main/functype",
+  "url": "https://github.com/jordanburke/TypeScript/tree/main/nestjs-config-zod-validatation",
   "scripts": {
     "ts-types": "tsc",
     "build:dev": "rimraf lib && tsup --watch",
