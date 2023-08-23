@@ -4,7 +4,9 @@
   "description": "A simple Zod Validation shim for NestJS ConfigService",
   "keywords": [
     "nestjs",
+    "@nestjs/core",
     "nestjs-config",
+    "@nestjs/config",
     "zod",
     "validation"
   ],
