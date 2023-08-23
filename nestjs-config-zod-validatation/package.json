@@ -1,7 +1,13 @@
 {
   "name": "nestjs-config-zod-validation",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A simple Zod Validation shim for NestJS ConfigService",
+  "keywords": [
+    "nestjs",
+    "nestjs-config",
+    "zod",
+    "validation"
+  ],
   "author": "jordan.burke@gmail.com",
   "license": "MIT",
   "url": "https://github.com/jordanburke/TypeScript/tree/main/nestjs-config-zod-validatation",
