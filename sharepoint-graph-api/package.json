@@ -1,12 +1,13 @@
 {
-  "name": "-template",
+  "name": "sharepoint-graph-api",
   "version": "0.0.1",
-  "description": "TODO",
+  "description": "A simple SharePoint API over the Microsoft Graph API",
   "keywords": [
+    "sharepoint"
   ],
   "author": "jordan.burke@gmail.com",
   "license": "MIT",
-  "homepage": "https://github.com/jordanburke/TypeScript/tree/main/nestjs-config-zod-validatation#nestjs-config-zod-validation",
+  "homepage": "https://github.com/jordanburke/TypeScript/tree/main/sharepoint-graph-api",
   "repository": {
     "type": "git",
     "url": "https://github.com/jordanburke/TypeScript"
@@ -24,6 +25,7 @@
     "test:cov": "jest --coverage"
   },
   "devDependencies": {
+    "@microsoft/microsoft-graph-types": "^2.38.0",
     "@types/node": "^18.17.5",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.4.0",
@@ -46,6 +48,8 @@
   "types": "dist/index.d.ts",
   "type": "module",
   "dependencies": {
+    "@azure/identity": "^3.3.0",
+    "@microsoft/microsoft-graph-client": "^3.0.6"
   },
   "files": [
     "lib",
