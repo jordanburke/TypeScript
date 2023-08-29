@@ -1,0 +1,60 @@
+{
+  "name": "nestjs-config-zod-validation",
+  "version": "1.0.5",
+  "description": "A simple Zod Validation shim for NestJS ConfigService",
+  "keywords": [
+    "nestjs",
+    "@nestjs/core",
+    "nestjs-config",
+    "@nestjs/config",
+    "zod",
+    "validation"
+  ],
+  "author": "jordan.burke@gmail.com",
+  "license": "MIT",
+  "homepage": "https://github.com/jordanburke/TypeScript/tree/main/nestjs-config-zod-validatation#nestjs-config-zod-validation",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jordanburke/TypeScript"
+  },
+  "scripts": {
+    "ts-types": "tsc",
+    "build:dev": "rimraf lib && tsup --watch",
+    "build:prod": "rimraf dist && cross-env NODE_ENV=production tsup",
+    "build:watch": "tsup --watch",
+    "lint:fix": "eslint ./src --ext .ts,.tsx --quiet --fix --ignore-path ./.gitignore",
+    "lint:format": "prettier  --loglevel warn --write \"./**/*.{ts,tsx,css,md,json}\" ",
+    "lint": "pnpm lint:format && pnpm lint:fix ",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage"
+  },
+  "devDependencies": {
+    "@types/node": "^18.17.5",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@typescript-eslint/parser": "^6.4.0",
+    "@types/jest": "29.5.3",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.47.0",
+    "eslint-config-prettier": "^8.10.0",
+    "eslint-plugin-import": "^2.28.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "jest": "29.6.2",
+    "prettier": "^3.0.2",
+    "rimraf": "^5.0.1",
+    "tsup": "^7.2.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.0.0"
+  },
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "dependencies": {
+  },
+  "files": [
+    "lib",
+    "dist"
+  ]
+}
