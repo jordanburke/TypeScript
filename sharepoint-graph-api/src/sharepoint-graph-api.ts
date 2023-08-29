@@ -33,8 +33,7 @@ export class SharepointGraphApi {
     // We can remove this await or make it optional if we need to speed this up!
     const result = await new Promise(async (resolve) => {
       const contentPath = `/sites/${siteId}/drive/root:/${path}/${fileName}:/content`
-      const status = await this.client.api(contentPath).put(content, resolve)
-      return status
+      return await this.client.api(contentPath).put(content, resolve)
     })
     return { name: fileName, success: result || true }
   }

@@ -1,9 +1,15 @@
 {
   "name": "sharepoint-graph-api",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A simple SharePoint API over the Microsoft Graph API",
   "keywords": [
-    "sharepoint"
+    "SharePoint",
+    "Microsoft",
+    "Graph",
+    "SDK",
+    "TypeScript",
+    "JavaScript",
+    "Client"
   ],
   "author": "jordan.burke@gmail.com",
   "license": "MIT",
