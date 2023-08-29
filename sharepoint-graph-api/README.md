@@ -1,31 +1,19 @@
-## nestjs-config-zod-validation
+## sharepoint-graph-api
 
-A simple Zod Validation shim for NestJS ConfigService
+A simple SharePoint API over the Microsoft Graph API
 
-``` typescript
-import { validationSchema, validationOptions } from "nestjs-config-zod-validation"
+Example Usage:
+``` javascript
+import { SharepointGraphApi } from "sharepoint-graph-api"
 
-@Module({
-  imports: [
-    ConfigModule.forRoot({
-      validationSchema: validationSchema(ConfigSchema), // Pass in your ZodSchema "Schema" here
-      validationOptions: validationOptions,
-    }),
-  ],
-})
+const api = new SharepointGraphApi()
+
+const childrenFiles = api.siteDriveItemChildren()
 ```
 
-Then upon start up you will get any validation errors if any, for example:
-```typescript
-ZodError: [
-  {
-    "code": "invalid_type",
-    "expected": "string",
-    "received": "undefined",
-    "path": [
-      "SOME_ZOD_VARIABLE",
-    ],
-    "message": "Required"
-  }
-]
+You will need to set these environment variables:
+```
+MS_APP_TENANT_ID
+MS_APP_CLIENT_ID
+MS_APP_SECRET
 ```
