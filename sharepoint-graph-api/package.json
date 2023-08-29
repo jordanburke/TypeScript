@@ -28,7 +28,8 @@
     "lint": "pnpm lint:format && pnpm lint:fix ",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage"
+    "test:cov": "jest --coverage",
+    "build:publish": "pnpm build:prod && pnpm publish --access public"
   },
   "devDependencies": {
     "@microsoft/microsoft-graph-types": "^2.38.0",
