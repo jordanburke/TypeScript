@@ -1,6 +1,6 @@
 {
   "name": "sharepoint-graph-api",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A simple SharePoint API over the Microsoft Graph API",
   "keywords": [
     "SharePoint",
