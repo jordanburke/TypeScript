@@ -1,6 +1,7 @@
 import { ParseError } from "../error/ParseError"
 import { Left } from "./Left"
 import { Right } from "./Right"
+import { IFunctor } from "../index"
 
 export interface Either<L, R> extends IFunctor<R> {
   value: L | R

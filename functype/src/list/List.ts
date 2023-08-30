@@ -1,3 +1,5 @@
+import { IFunctor } from "../index"
+
 export class List<T> implements IFunctor<T> {
   private readonly items: T[]
 

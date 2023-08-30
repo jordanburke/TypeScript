@@ -1,4 +1,4 @@
-interface IFunctor<T> {
+export interface IFunctor<T> {
   map<U>(f: (value: T) => U): IFunctor<U>;
   flatMap<U>(f: (value: T) => IFunctor<U>): IFunctor<U>;
   reduce<U>(f: (acc: U, value: T) => U): IFunctor<U>;

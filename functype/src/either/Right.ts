@@ -1,5 +1,6 @@
 import { Either } from "./index"
 import { Left } from "./Left"
+import { IFunctor } from "../index"
 
 export class Right<L, R> implements Either<L, R> {
   constructor(public value: R) {
