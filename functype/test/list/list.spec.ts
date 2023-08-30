@@ -26,24 +26,24 @@ describe("List", () => {
     expect(list4).toEqual({ items: [20] })
   })
 
-  const list = new List([1, 2, 3, 4]);
+  const list = new List([1, 2, 3, 4])
 
-  const squared = list.map(x => x * x);
+  const squared = list.map(x => x * x)
   it("squared", () => {
-    expect(squared).toEqual({ items: [1,4,9,16] })
+    expect(squared).toEqual({ items: [1, 4, 9, 16] })
   })
 
-  const flatMapped = list.flatMap(x => new List([x, x * 10]));
+  const flatMapped = list.flatMap(x => new List([x, x * 10]))
   it("flatMapped", () => {
-    expect(flatMapped).toEqual({ items: [1,10,2,20,3,30,4,40] })
+    expect(flatMapped).toEqual({ items: [1, 10, 2, 20, 3, 30, 4, 40] })
   })
 
-  const sum = list.foldLeft(0, (acc, x) => acc + x);
+  const sum = list.foldLeft(0, (acc, x) => acc + x)
   it("sum", () => {
     expect(sum).toEqual(10)
   })
 
-  const sumRight = list.foldRight(0, (x, acc) => acc + x);
+  const sumRight = list.foldRight(0, (x, acc) => acc + x)
   it("sumRight", () => {
     expect(sumRight).toEqual(10)
   })

@@ -4,9 +4,13 @@ import { Right } from "./Right"
 
 export interface Either<L, R> extends IFunctor<R> {
   value: L | R
+
   isLeft(): this is Left<L, R>
+
   isRight(): this is Right<L, R>
+
   map<U>(f: (value: R) => U): Either<L, U>
+
   flatMap<U>(f: (value: R) => Either<L, U>): Either<L, U>
 }
 
