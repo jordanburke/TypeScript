@@ -2,7 +2,13 @@ import { ParseError } from "../error/ParseError"
 import { Left } from "./Left"
 import { Right } from "./Right"
 
-export type Either<L, R> = Left<L, R> | Right<L, R>
+export interface Either<L, R> extends IFunctor<R> {
+  value: L | R
+  isLeft(): this is Left<L, R>
+  isRight(): this is Right<L, R>
+  map<U>(f: (value: R) => U): Either<L, U>
+  flatMap<U>(f: (value: R) => Either<L, U>): Either<L, U>
+}
 
 // Helper functions
 export const left = <L, R>(value: L): Either<L, R> => new Left(value)

@@ -10,11 +10,6 @@ describe("List", () => {
   const list3 = list2.add(20)
   const list4 = list3.removeAt(0)
 
-  // console.log(list1.toArray())  // []
-  // console.log(list2.toArray())  // [10]
-  // console.log(list3.toArray())  // [10, 20]
-  // console.log(list4.toArray())  // [20]
-
   it("new list", () => {
     expect(list1).toEqual({ items: [] })
   })
@@ -29,5 +24,27 @@ describe("List", () => {
 
   it("list of 20", () => {
     expect(list4).toEqual({ items: [20] })
+  })
+
+  const list = new List([1, 2, 3, 4]);
+
+  const squared = list.map(x => x * x);
+  it("squared", () => {
+    expect(squared).toEqual({ items: [1,4,9,16] })
+  })
+
+  const flatMapped = list.flatMap(x => new List([x, x * 10]));
+  it("flatMapped", () => {
+    expect(flatMapped).toEqual({ items: [1,10,2,20,3,30,4,40] })
+  })
+
+  const sum = list.foldLeft(0, (acc, x) => acc + x);
+  it("sum", () => {
+    expect(sum).toEqual(10)
+  })
+
+  const sumRight = list.foldRight(0, (x, acc) => acc + x);
+  it("sumRight", () => {
+    expect(sumRight).toEqual(10)
   })
 })

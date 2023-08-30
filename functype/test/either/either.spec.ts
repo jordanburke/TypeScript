@@ -17,6 +17,6 @@ describe("Either", () => {
   })
 
   it("parse valid invalid number", () => {
-    expect(result2).toStrictEqual(new ParseError("NaN"))
+    expect(result2.value).toStrictEqual(new ParseError("NaN"))
   })
 })

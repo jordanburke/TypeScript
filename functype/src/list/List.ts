@@ -1,4 +1,4 @@
-export class List<T> {
+export class List<T> implements IFunctor<T> {
   private readonly items: T[]
 
   constructor(items?: T[]) {
@@ -32,5 +32,37 @@ export class List<T> {
   // Convert to array (for read-only purposes)
   toArray(): readonly T[] {
     return this.items
+  }
+
+  map<U>(f: (value: T) => U): List<U> {
+    return new List(this.items.map(f))
+  }
+
+  flatMap<U>(f: (value: T) => List<U>): List<U> {
+    return this.items.reduce(
+      (acc, item) => acc.concat(f(item)),
+      new List<U>(),
+    )
+  }
+
+  reduce<U>(f: (acc: U, value: T) => U): List<U> {
+    const reducedValue = this.items.reduce(f, undefined as any)
+    return new List([reducedValue])
+  }
+
+  foldLeft<U>(initialValue: U, f: (acc: U, value: T) => U): U {
+    return this.items.reduce(f, initialValue)
+  }
+
+  foldRight<U>(initialValue: U, f: (value: T, acc: U) => U): U {
+    return this.items.reduceRight((acc, value) => f(value, acc), initialValue)
+  }
+
+  concat(other: List<T>): List<T> {
+    return new List([...this.items, ...other.items])
+  }
+
+  toString(): string {
+    return `List(${this.items.toString()})`
   }
 }

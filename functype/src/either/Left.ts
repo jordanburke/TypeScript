@@ -1,28 +1,34 @@
 import { Either } from "./index"
 import { Right } from "./Right"
 
-export class Left<L, R> {
-  readonly tag = "Left"
-
+export class Left<L, R> implements Either<L, R> {
   constructor(public value: L) {}
 
   isLeft(): this is Left<L, R> {
-    return true
+    return true;
   }
 
   isRight(): this is Right<L, R> {
-    return false
+    return false;
   }
 
-  // Transform only the Right value
-  // eslint-disable-line @typescript-eslint/no-unused-vars
-  map<U>(f: (value: R) => U): Either<L, U> {
-    return new Left(this.value)
+  map<U>(_f: (value: R) => U): Either<L, U> {
+    return new Left<L, U>(this.value);
   }
 
-  // Chain functions that return an Either
-  flatMap<U>(f: (value: R) => Either<L, U>): Either<L, U> {
-    // eslint-disable-line @typescript-eslint/no-unused-vars
-    return new Left(this.value)
+  flatMap<U>(_f: (value: R) => Either<L, U>): Either<L, U> {
+    return new Left<L, U>(this.value);
+  }
+
+  reduce<U>(_f: (acc: U, value: R) => U): IFunctor<U> {
+    return new Left<L, U>(this.value);
+  }
+
+  foldLeft<U>(initialValue: U, _f: (acc: U, value: R) => U): U {
+    return initialValue;
+  }
+
+  foldRight<U>(initialValue: U, _f: (value: R, acc: U) => U): U {
+    return initialValue;
   }
 }
