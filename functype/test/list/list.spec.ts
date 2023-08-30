@@ -47,4 +47,9 @@ describe("List", () => {
   it("sumRight", () => {
     expect(sumRight).toEqual(10)
   })
+
+  const foldLeftToString = list.foldLeft("hello", (acc, x) => acc + x);
+  it("foldLeftToString", () => {
+    expect(foldLeftToString).toEqual("hello1234")
+  })
 })
