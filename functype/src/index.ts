@@ -1,3 +1,5 @@
+import { List } from "./list/List"
+
 export interface IFunctor<T> {
   map<U>(f: (value: T) => U): IFunctor<U>;
   flatMap<U>(f: (value: T) => IFunctor<U>): IFunctor<U>;
@@ -5,3 +7,6 @@ export interface IFunctor<T> {
   foldLeft<U>(initialValue: U, f: (acc: U, value: T) => U): U;
   foldRight<U>(initialValue: U, f: (value: T, acc: U) => U): U;
 }
+
+export * from "./either"
+export { List }
