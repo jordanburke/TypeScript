@@ -5,3 +5,5 @@ export interface IFunctor<T> {
   foldLeft<U>(initialValue: U, f: (acc: U, value: T) => U): U;
   foldRight<U>(initialValue: U, f: (value: T, acc: U) => U): U;
 }
+
+export {}
