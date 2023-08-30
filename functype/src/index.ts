@@ -6,4 +6,7 @@ export interface IFunctor<T> {
   foldRight<U>(initialValue: U, f: (value: T, acc: U) => U): U;
 }
 
-export {}
+export * from "./either"
+export * from "./either/Right"
+export * from "./either/Left"
+export * from "./list/List"
