@@ -1,4 +1,4 @@
-import { parseNumber } from "../../src/either"
+import { parseNumber } from "../../src"
 import { ParseError } from "../../src/error/ParseError"
 
 describe("Either", () => {
@@ -16,7 +16,15 @@ describe("Either", () => {
     expect(result1.value).toBe(246)
   })
 
+  it("map on Right", () => {
+    expect(result1.map(f => 4).value).toBe(4)
+  })
+
   it("parse valid invalid number", () => {
     expect(result2.value).toStrictEqual(new ParseError("NaN"))
+  })
+
+  it("map on Left", () => {
+    expect(result2.map(f => 10).value).toStrictEqual(new ParseError("NaN"))
   })
 })

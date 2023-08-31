@@ -1,10 +1,8 @@
-import { Either } from "./index"
-import { Right } from "./Right"
-import { IFunctor } from "../index"
+import { Either, Right } from "./index"
+import { IFunctor, List, none, Option } from "../index"
 
 export class Left<L, R> implements Either<L, R> {
-  constructor(public value: L) {
-  }
+  constructor(public value: L) {}
 
   isLeft(): this is Left<L, R> {
     return true
@@ -32,5 +30,13 @@ export class Left<L, R> implements Either<L, R> {
 
   foldRight<U>(initialValue: U, _f: (value: R, acc: U) => U): U {
     return initialValue
+  }
+
+  toOption(): Option<R> {
+    return none<R>()
+  }
+
+  toList(): List<R> {
+    return new List()
   }
 }
