@@ -24,11 +24,11 @@ export const validationSchema = (schema: ZodSchema) => {
       if (!validationOptions) {
         return config
       } else {
-        const { error, value } = validationOptions.validate(config, schema)
-        if (error) {
-          throw error
+        const result = validationOptions.validate(config, schema)
+        if (result.error) {
+          throw result.error
         } else {
-          return value
+          return result
         }
       }
     },
