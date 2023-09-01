@@ -38,9 +38,8 @@
     "typescript": "^5.1.6"
   },
   "main": "dist/index.cjs",
-  "module": "dist/index.js",
+  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
-  "type": "module",
   "dependencies": {
   },
   "files": [

@@ -26,8 +26,8 @@ export class None<T> implements Option<T> {
     return new None<U>()
   }
 
-  reduce<U>(f: (acc: U, value: T) => U): Option<U> {
-    return new None<U>()
+  reduce<U>(f: (acc: U, value: T) => U): U {
+    return f(undefined as any, undefined as any)
   }
 
   foldLeft<U>(initialValue: U, f: (acc: U, value: T) => U): U {

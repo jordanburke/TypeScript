@@ -1,10 +1,16 @@
-import { IFunctor } from "../index"
+import { IList } from "./index"
 
-export class List<T> implements IFunctor<T> {
+export class List<T> implements IList<T> {
   private readonly items: T[]
 
   constructor(items?: T[]) {
     this.items = items ? [...items] : []
+  }
+
+  readonly [n: number]: T
+
+  isEmpty(): boolean {
+    return this.items.length === 0
   }
 
   // Return the length of the list
@@ -14,6 +20,7 @@ export class List<T> implements IFunctor<T> {
 
   // Add an item to the list and return a new list
   add(item: T): List<T> {
+    const foo = new Map()
     return new List([...this.items, item])
   }
 
@@ -37,19 +44,22 @@ export class List<T> implements IFunctor<T> {
   }
 
   map<U>(f: (value: T) => U): List<U> {
-    return new List(this.items.map(f))
+    return new List<U>(this.items.map(f))
   }
 
   flatMap<U>(f: (value: T) => List<U>): List<U> {
-    return this.items.reduce(
-      (acc, item) => acc.concat(f(item)),
-      new List<U>(),
-    )
+    const tempArray: U[] = []
+    for (const item of this.items) {
+      const mappedList = f(item)
+      if (mappedList instanceof List) {
+        tempArray.push(...mappedList.items)
+      }
+    }
+    return new List(tempArray)
   }
 
-  reduce<U>(f: (acc: U, value: T) => U): List<U> {
-    const reducedValue = this.items.reduce(f, undefined as any)
-    return new List([reducedValue])
+  reduce<U>(f: (acc: U, value: T) => U): U {
+    return this.items.reduce(f, undefined as any)
   }
 
   foldLeft<U>(initialValue: U, f: (acc: U, value: T) => U): U {

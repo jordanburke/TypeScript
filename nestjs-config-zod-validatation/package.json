@@ -1,6 +1,6 @@
 {
   "name": "nestjs-config-zod-validation",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A simple Zod Validation shim for NestJS ConfigService",
   "keywords": [
     "nestjs",
@@ -52,7 +52,6 @@
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
-  "type": "module",
   "dependencies": {
     "zod": "^3.10.0"
   },

@@ -27,8 +27,8 @@ export class Some<T> implements Option<T> {
     return f(this.value)
   }
 
-  reduce<U>(f: (acc: U, value: T) => U): Option<U> {
-    return new Some(f(undefined as any, this.value))
+  reduce<U>(f: (acc: U, value: T) => U): U {
+    return f(undefined as any, this.value)
   }
 
   foldLeft<U>(initialValue: U, f: (acc: U, value: T) => U): U {

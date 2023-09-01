@@ -20,18 +20,6 @@ export class Left<L, R> implements Either<L, R> {
     return new Left<L, U>(this.value)
   }
 
-  reduce<U>(_f: (acc: U, value: R) => U): IFunctor<U> {
-    return new Left<L, U>(this.value)
-  }
-
-  foldLeft<U>(initialValue: U, _f: (acc: U, value: R) => U): U {
-    return initialValue
-  }
-
-  foldRight<U>(initialValue: U, _f: (value: R, acc: U) => U): U {
-    return initialValue
-  }
-
   toOption(): Option<R> {
     return none<R>()
   }

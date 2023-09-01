@@ -1,9 +1,8 @@
-import { IFunctor, List } from "../index"
+import { IFunctor, ITraversable, List } from "../index"
 import { Some } from "./Some"
 import { None } from "./None"
 
-export interface Option<T> extends IFunctor<T> {
-  isEmpty(): boolean
+export interface Option<T> extends IFunctor<T>, ITraversable<T> {
   get(): T
   getOrElse(defaultValue: T): T
   orElse(alternative: Option<T>): Option<T>
