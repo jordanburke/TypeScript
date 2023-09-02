@@ -45,9 +45,8 @@
   "dependencies": {
     "@cspell/dynamic-import": "^7.3.2",
     "@xenova/transformers": "^2.5.2",
-    "langchain": "^0.0.140"
+    "langchain": "^0.0.140-1"
   },
-  "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
