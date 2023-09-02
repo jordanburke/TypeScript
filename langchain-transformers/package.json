@@ -1,6 +1,6 @@
 {
   "name": "langchain-transformers",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A langchain adapter for Huggingface transformers",
   "keywords": [
   ],
@@ -20,7 +20,7 @@
     "lint:fix": "eslint ./src --ext .ts,.tsx --quiet --fix --ignore-path ./.gitignore",
     "lint:format": "prettier  --loglevel warn --write \"./**/*.{ts,tsx,css,md,json}\" ",
     "lint": "pnpm lint:format && pnpm lint:fix ",
-    "test": "jest",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js ",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage"
   },
@@ -44,8 +44,9 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "langchain": "^0.0.140",
-    "@xenova/transformers": "^2.5.2"
+    "@cspell/dynamic-import": "^7.3.2",
+    "@xenova/transformers": "^2.5.2",
+    "langchain": "^0.0.140"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

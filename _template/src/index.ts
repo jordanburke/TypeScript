@@ -1,4 +1,5 @@
-
 export const helloWorld = () => {
-  console.log("Hello World!")
+  const helloWorld = "Hello World!"
+  console.log(helloWorld)
+  return "Hello World!"
 }
