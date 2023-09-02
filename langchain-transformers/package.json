@@ -1,12 +1,12 @@
 {
-  "name": "-template",
-  "version": "0.0.2",
-  "description": "TODO",
+  "name": "langchain-transformers",
+  "version": "0.0.1",
+  "description": "A langchain adapter for Huggingface transformers",
   "keywords": [
   ],
   "author": "jordan.burke@gmail.com",
   "license": "MIT",
-  "homepage": "https://github.com/jordanburke/TypeScript/tree/main/nestjs-config-zod-validatation#nestjs-config-zod-validation",
+  "homepage": "https://github.com/jordanburke/TypeScript/tree/main/langchain-transformers",
   "repository": {
     "type": "git",
     "url": "https://github.com/jordanburke/TypeScript"
@@ -42,6 +42,10 @@
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "langchain": "^0.0.140",
+    "@xenova/transformers": "^2.5.2"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
