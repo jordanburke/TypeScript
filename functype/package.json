@@ -1,6 +1,6 @@
 {
   "name": "functype",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A small functional library for TypeScript",
   "author": "jordan.burke@gmail.com",
   "license": "MIT",
@@ -37,10 +37,15 @@
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
   },
-  "main": "dist/index.cjs",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "dependencies": {
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
   },
   "files": [
     "lib",

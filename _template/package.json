@@ -1,6 +1,6 @@
 {
   "name": "-template",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "TODO",
   "keywords": [
   ],
@@ -43,11 +43,15 @@
     "ts-node": "^10.9.1",
     "typescript": "^5.0.0"
   },
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "type": "module",
-  "dependencies": {
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
   },
   "files": [
     "lib",

@@ -30,15 +30,21 @@
     "rimraf": "^5.0.1",
     "tsup": "^7.2.0"
   },
-  "main": "lib/index.cjs",
-  "module": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "type": "module",
   "dependencies": {
     "@types/ssh2": "^1.11.13",
     "functype": "^0.0.1",
     "ssh2": "^1.14.0",
     "typescript": "^5.1.6"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
   },
   "files": [
     "lib",
