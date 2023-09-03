@@ -2,6 +2,7 @@ import { ESMap, IESMap } from "./shim"
 import { option, Option } from "../option"
 import { IMap } from "./index"
 import { Type } from "../index"
+import { ITuple } from "../tuple"
 
 export class Map<K, V> implements IMap<K, V> {
   private internalMap: IESMap<K, V>
@@ -10,18 +11,18 @@ export class Map<K, V> implements IMap<K, V> {
     this.internalMap = new ESMap<K, V>(entries)
   }
 
-  add(item: K): IMap<K, V> {
+  add(item: K): Map<K, V> {
     return new Map<K, V>()
   }
 
-  remove(value: K): IMap<K, V> {
+  remove(value: ITuple<[K, V]>): Map<K, V> {
     const newMap = new Map<K, V>([...this.internalMap.entries()])
-    newMap.internalMap.delete(value)
+    newMap.internalMap.delete(value[0])
     return newMap
   }
 
-  contains(value: K): boolean {
-    return this.internalMap.has(value)
+  contains(value: ITuple<[K, V]>): boolean {
+    return this.internalMap.get(value[0]) === value[1]
   }
 
   get size(): number {
