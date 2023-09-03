@@ -40,13 +40,16 @@ export class TransformersEmbeddings extends Embeddings {
 export const importTransformers = async () => {
   console.log("<Transformers>")
   try {
-    if (this === undefined) {
-      const module = await dynamicImport<typeof import("@xenova/transformers")>("@xenova/transformers", import.meta.url)
-      console.info("@xenova/transformers Loaded")
+    if (!this) {
+      const module = await dynamicImport<typeof import("@xenova/transformers")>(
+        "@xenova/transformers",
+        "import.meta.url",
+      )
+      console.info("@xenova/transformers Loaded via ESM")
       return module
     } else {
       const module = await dynamicImport<typeof import("@xenova/transformers")>("@xenova/transformers", __dirname)
-      console.info("@xenova/transformers Loaded")
+      console.info("@xenova/transformers Loaded via CommonJS")
       return module
     }
   } catch (e) {
