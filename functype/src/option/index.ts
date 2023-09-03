@@ -1,18 +1,18 @@
-import { IFunctor, ITraversable, List } from "../index"
+import { IFunctor, ITraversable, List, SingleType, Type } from "../index"
 import { Some } from "./Some"
 import { None } from "./None"
 
-export interface Option<T> extends IFunctor<T>, ITraversable<T> {
+export interface Option<T extends Type> extends IFunctor<T>, ITraversable<T> {
   get(): T
   getOrElse(defaultValue: T): T
   orElse(alternative: Option<T>): Option<T>
-  map<U>(f: (value: T) => U): Option<U>
-  flatMap<U>(f: (value: T) => Option<U>): Option<U>
+  map<U extends Type>(f: (value: T) => U): Option<U>
+  flatMap<U extends Type>(f: (value: T) => Option<U>): Option<U>
   toList(): List<T>
 }
 
-export const option = <T>(value?: T): Option<T> => (value ? some(value) : none<T>())
-export const some = <T>(value: T): Option<T> => new Some(value)
-export const none = <T>(): Option<T> => new None<T>()
+export const option = <T extends Type>(value?: T): Option<T> => (value ? some(value) : none<T>())
+export const some = <T extends Type>(value: T): Option<T> => new Some(value)
+export const none = <T extends Type>(): Option<T> => new None<T>()
 
 export { Some, None }

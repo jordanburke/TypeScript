@@ -1,16 +1,15 @@
-import { IFunctor, ITraversable, Option } from "../index"
-import { Map } from "./Map"
+import { IFunctor, Option, Type } from "../index"
+import { ITuple } from "../tuple"
+export { Map } from "./Map"
 
-export interface IMap<K, T> extends IFunctor<T> {
-  map<U>(f: (value: T) => U): IMap<K, U>
+export interface IMap<K extends Type, V extends Type> extends IFunctor<ITuple<[K, V]>> {
+  map<U>(f: (value) => U): IMap<K, U>
 
-  flatMap<U>(f: (value: T) => IMap<K, U>): IMap<K, U>
+  flatMap<U>(f: (value) => IMap<K, U>): IMap<K, U>
 
-  get(key: K): Option<T>
+  get(key: K): Option<V>
 
-  getOrElse(key: K, defaultValue: T): T
+  getOrElse(key: K, defaultValue: V): V
 
-  orElse(key: K, alternative: Option<T>): Option<T>
+  orElse(key: K, alternative: Option<V>): Option<V>
 }
-
-export { Map }

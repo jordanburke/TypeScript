@@ -1,6 +1,7 @@
 import { ESMap, IESMap } from "./shim"
-import { None, option, Option } from "../option"
+import { option, Option } from "../option"
 import { IMap } from "./index"
+import { Type } from "../index"
 
 export class Map<K, V> implements IMap<K, V> {
   private internalMap: IESMap<K, V>
@@ -27,7 +28,7 @@ export class Map<K, V> implements IMap<K, V> {
     return this.internalMap.size
   }
 
-  map<U>(f: (value: V) => U): IMap<K, U> {
+  map<U extends Type>(f: (value: V) => U): IMap<K, U> {
     const newEntries: [K, U][] = []
     for (const [key, value] of this.internalMap.entries()) {
       newEntries.push([key, f(value)])
@@ -35,7 +36,7 @@ export class Map<K, V> implements IMap<K, V> {
     return new Map(newEntries)
   }
 
-  flatMap<U>(f: (value: V) => IMap<K, U>): IMap<K, U> {
+  flatMap<U extends Type>(f: (value: V) => IMap<K, U>): IMap<K, U> {
     const newEntries: [K, U][] = []
     for (const [key, value] of this.internalMap.entries()) {
       const mapped = f(value)
@@ -92,16 +93,12 @@ export class Map<K, V> implements IMap<K, V> {
 
   orElse(key: K, alternative: Option<V>): Option<V> {
     const v = option(this.internalMap.get(key))
-    if (v instanceof None) {
-      return alternative
-    } else {
-      return v
-    }
+    return alternative
   }
 }
 
 // Example usage
-const myMap = new Map<string, number>([
+const myMap = new Map<string, any>([
   ["a", 1],
   ["b", 2],
   ["c", 3],

@@ -1,4 +1,4 @@
-import { Option, Some, None, Map } from "../../src" // Replace with the actual path to your Option classes
+import { Map, None, Some } from "../../src" // Replace with the actual path to your Option classes
 
 describe("Map", () => {
   let map: Map<string, number>

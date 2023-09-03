@@ -6,7 +6,7 @@ describe("Option", () => {
     // Nothing
   })
 
-  const something: Option<string> = option("hello")
+  const something: Option<string> = option<string>("hello")
   const nothing: Option<string> = option()
 
   // console.log(result1); // Some { value: 246 }
