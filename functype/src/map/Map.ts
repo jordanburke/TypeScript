@@ -1,12 +1,30 @@
+import { ESMap, IESMap } from "./shim"
+import { None, option, Option } from "../option"
 import { IMap } from "./index"
-import { option, Option } from "../option"
 
-// Implement the ImmutableMap class based on the IMap interface
-class ImmutableMap<K, V> implements IMap<K, V> {
-  private internalMap: Map<K, V>
+export class Map<K, V> implements IMap<K, V> {
+  private internalMap: IESMap<K, V>
 
   constructor(entries: [K, V][] = []) {
-    this.internalMap = new Map<K, V>(entries)
+    this.internalMap = new ESMap<K, V>(entries)
+  }
+
+  add(item: K): IMap<K, V> {
+    return new Map<K, V>()
+  }
+
+  remove(value: K): IMap<K, V> {
+    const newMap = new Map<K, V>([...this.internalMap.entries()])
+    newMap.internalMap.delete(value)
+    return newMap
+  }
+
+  contains(value: K): boolean {
+    return this.internalMap.has(value)
+  }
+
+  get size(): number {
+    return this.internalMap.size
   }
 
   map<U>(f: (value: V) => U): IMap<K, U> {
@@ -14,22 +32,20 @@ class ImmutableMap<K, V> implements IMap<K, V> {
     for (const [key, value] of this.internalMap.entries()) {
       newEntries.push([key, f(value)])
     }
-    return new ImmutableMap(newEntries)
+    return new Map(newEntries)
   }
 
   flatMap<U>(f: (value: V) => IMap<K, U>): IMap<K, U> {
     const newEntries: [K, U][] = []
     for (const [key, value] of this.internalMap.entries()) {
       const mapped = f(value)
-      if (mapped instanceof ImmutableMap) {
+      if (mapped instanceof Map) {
         for (const [newKey, newValue] of mapped.internalMap.entries()) {
-          if (newKey === key) {
-            newEntries.push([newKey, newValue])
-          }
+          newEntries.push([newKey, newValue])
         }
       }
     }
-    return new ImmutableMap(newEntries)
+    return new Map(newEntries)
   }
 
   reduce<U>(f: (acc: U, value: V) => U): U {
@@ -70,12 +86,17 @@ class ImmutableMap<K, V> implements IMap<K, V> {
     return option(this.internalMap.get(key)).getOrElse(defaultValue)
   }
 
-  isEmpty(): boolean {
+  get isEmpty(): boolean {
     return this.internalMap.size === 0
   }
 
   orElse(key: K, alternative: Option<V>): Option<V> {
-    return option(this.internalMap.get(key)) || alternative
+    const v = option(this.internalMap.get(key))
+    if (v instanceof None) {
+      return alternative
+    } else {
+      return v
+    }
   }
 }
 

@@ -1,7 +1,7 @@
 import { List } from "./List"
-import { IFunctor, ITraversable } from "../index"
+import { ICollection, IFunctor } from "../index"
 
-export interface IList<T> extends IFunctor<T>, ITraversable<T>, ArrayLike<T> {
+export interface IList<T> extends IFunctor<T>, ICollection<T>, ArrayLike<T> {
   map<U>(f: (value: T) => U): IList<U>
   flatMap<U>(f: (value: T) => IList<U>): IList<U>
   reduce<U>(f: (acc: U, value: T) => U): U

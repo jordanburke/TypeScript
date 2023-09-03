@@ -1,15 +1,30 @@
 import { IList } from "./index"
+import { option, Option } from "../option"
 
 export class List<T> implements IList<T> {
   private readonly items: T[]
 
-  constructor(items?: T[]) {
-    this.items = items ? [...items] : []
+  constructor(iterable?: Iterable<T>) {
+    this.items = iterable ? [...iterable] : []
   }
 
   readonly [n: number]: T
 
-  isEmpty(): boolean {
+  remove(value: T): List<T> {
+    const newList = new List<T>()
+    const index = newList.items.indexOf(value)
+    return this.removeAt(index)
+  }
+
+  contains(value: T): boolean {
+    return this.items.indexOf(value) !== -1
+  }
+
+  get size(): number {
+    return this.items.length
+  }
+
+  get isEmpty(): boolean {
     return this.items.length === 0
   }
 
@@ -20,7 +35,6 @@ export class List<T> implements IList<T> {
 
   // Add an item to the list and return a new list
   add(item: T): List<T> {
-    const foo = new Map()
     return new List([...this.items, item])
   }
 
@@ -34,8 +48,8 @@ export class List<T> implements IList<T> {
   }
 
   // Retrieve an item by index
-  get(index: number): T | undefined {
-    return this.items[index]
+  get(index: number): Option<T> {
+    return option(this.items[index])
   }
 
   // Convert to array (for read-only purposes)

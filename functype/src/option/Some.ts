@@ -1,9 +1,10 @@
 import { Option } from "./index"
 import { List } from "../list"
+import { ITraversable } from "../index"
 export class Some<T> implements Option<T> {
   constructor(private value: T) {}
 
-  isEmpty(): boolean {
+  get isEmpty(): boolean {
     return false
   }
 
@@ -41,5 +42,13 @@ export class Some<T> implements Option<T> {
 
   toList(): List<T> {
     return new List<T>([this.value])
+  }
+
+  contains(value: T): boolean {
+    return false
+  }
+
+  get size(): number {
+    return 0
   }
 }

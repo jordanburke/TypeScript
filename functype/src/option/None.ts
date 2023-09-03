@@ -2,7 +2,7 @@ import { Option } from "./index"
 import { List } from "../list"
 
 export class None<T> implements Option<T> {
-  isEmpty(): boolean {
+  get isEmpty(): boolean {
     return true
   }
 
@@ -40,5 +40,13 @@ export class None<T> implements Option<T> {
 
   toList(): List<T> {
     return new List<T>()
+  }
+
+  contains(value: T): boolean {
+    return false
+  }
+
+  get size(): number {
+    return 0
   }
 }
