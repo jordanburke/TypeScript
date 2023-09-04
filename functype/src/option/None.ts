@@ -1,8 +1,8 @@
-import { Option } from "./index"
+import { IOption } from "./index"
 import { List } from "../list"
 import { Type } from "../index"
 
-export class None<T extends Type> implements Option<T> {
+export class None<T extends Type> implements IOption<T> {
   get isEmpty(): boolean {
     return true
   }
@@ -15,15 +15,15 @@ export class None<T extends Type> implements Option<T> {
     return defaultValue
   }
 
-  orElse(alternative: Option<T>): Option<T> {
+  orElse(alternative: IOption<T>): IOption<T> {
     return alternative
   }
 
-  map<U extends Type>(f: (value: T) => U): Option<U> {
+  map<U extends Type>(f: (value: T) => U): IOption<U> {
     return new None<U>()
   }
 
-  flatMap<U extends Type>(f: (value: T) => Option<U>): Option<U> {
+  flatMap<U extends Type>(f: (value: T) => IOption<U>): IOption<U> {
     return new None<U>()
   }
 

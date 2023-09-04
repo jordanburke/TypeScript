@@ -1,13 +1,12 @@
-import { option, Option, parseNumber } from "../../src"
-import { ParseError } from "../../src/error/ParseError"
+import { IOption, option } from "../../src/option"
 
 describe("Option", () => {
   beforeEach(async () => {
     // Nothing
   })
 
-  const something: Option<string> = option<string>("hello")
-  const nothing: Option<string> = option()
+  const something: IOption<string> = option<string>("hello")
+  const nothing: IOption<string> = option()
 
   // console.log(result1); // Some { value: 246 }
   // console.log(result2); // None

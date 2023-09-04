@@ -1,7 +1,7 @@
-import { Option } from "./index"
+import { IOption } from "./index"
 import { List } from "../list"
 import { ITraversable, Type } from "../index"
-export class Some<T extends Type> implements Option<T> {
+export class Some<T extends Type> implements IOption<T> {
   constructor(private value: T) {}
 
   get isEmpty(): boolean {
@@ -16,15 +16,15 @@ export class Some<T extends Type> implements Option<T> {
     return this.value
   }
 
-  orElse(alternative: Option<T>): Option<T> {
+  orElse(alternative: IOption<T>): IOption<T> {
     return this
   }
 
-  map<U extends Type>(f: (value: T) => U): Option<U> {
+  map<U extends Type>(f: (value: T) => U): IOption<U> {
     return new Some(f(this.value))
   }
 
-  flatMap<U extends Type>(f: (value: T) => Option<U>): Option<U> {
+  flatMap<U extends Type>(f: (value: T) => IOption<U>): IOption<U> {
     return f(this.value)
   }
 

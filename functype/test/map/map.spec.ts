@@ -1,4 +1,5 @@
-import { Map, None, Some } from "../../src"
+import { Map } from "../../src/map"
+import { Some, None } from "../../src/option"
 import { Tuple } from "../../src/tuple" // Replace with the actual path to your Option classes
 
 describe("Map", () => {

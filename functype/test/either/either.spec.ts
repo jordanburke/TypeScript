@@ -1,5 +1,5 @@
-import { parseNumber } from "../../src"
 import { ParseError } from "../../src/error/ParseError"
+import { parseNumber } from "../../src/util"
 
 describe("Either", () => {
   beforeEach(async () => {
@@ -17,7 +17,7 @@ describe("Either", () => {
   })
 
   it("map on Right", () => {
-    expect(result1.map(f => 4).value).toBe(4)
+    expect(result1.map((f) => 4).value).toBe(4)
   })
 
   it("parse valid invalid number", () => {
@@ -25,6 +25,6 @@ describe("Either", () => {
   })
 
   it("map on Left", () => {
-    expect(result2.map(f => 10).value).toStrictEqual(new ParseError("NaN"))
+    expect(result2.map((f) => 10).value).toStrictEqual(new ParseError("NaN"))
   })
 })

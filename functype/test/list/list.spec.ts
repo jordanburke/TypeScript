@@ -11,44 +11,44 @@ describe("List", () => {
   const list4 = list3.removeAt(0)
 
   it("new list", () => {
-    expect(list1).toEqual({ items: [] })
+    expect(list1).toEqual({ values: [] })
   })
 
   it("list of 10", () => {
-    expect(list2).toEqual({ items: [10] })
+    expect(list2).toEqual({ values: [10] })
   })
 
   it("list of 10, 20", () => {
-    expect(list3).toEqual({ items: [10, 20] })
+    expect(list3).toEqual({ values: [10, 20] })
   })
 
   it("list of 20", () => {
-    expect(list4).toEqual({ items: [20] })
+    expect(list4).toEqual({ values: [20] })
   })
 
   const list = new List([1, 2, 3, 4])
 
-  const squared = list.map(x => x * x)
+  const squared = list.map((x) => x * x)
   it("squared", () => {
-    expect(squared).toEqual({ items: [1, 4, 9, 16] })
+    expect(squared).toEqual({ values: [1, 4, 9, 16] })
   })
 
-  const flatMapped = list.flatMap(x => new List([x, x * 10]))
+  const flatMapped = list.flatMap((x) => new List([x, x * 10]))
   it("flatMapped", () => {
-    expect(flatMapped).toEqual({ items: [1, 10, 2, 20, 3, 30, 4, 40] })
+    expect(flatMapped).toEqual({ values: [1, 10, 2, 20, 3, 30, 4, 40] })
   })
 
-  const sum = list.foldLeft(0, (acc, x) => acc + x)
+  const sum = list.foldLeft(0)((acc, x) => acc + x)
   it("sum", () => {
     expect(sum).toEqual(10)
   })
 
-  const sumRight = list.foldRight(0, (x, acc) => acc + x)
+  const sumRight = list.foldRight(0)((x, acc) => acc + x)
   it("sumRight", () => {
     expect(sumRight).toEqual(10)
   })
 
-  const foldLeftToString = list.foldLeft("hello", (acc, x) => acc + x);
+  const foldLeftToString = list.foldLeft("hello")((acc, x) => acc + x.toString())
   it("foldLeftToString", () => {
     expect(foldLeftToString).toEqual("hello1234")
   })

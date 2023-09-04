@@ -1,5 +1,6 @@
 import { Either, Left } from "./index"
-import { IFunctor, List, Option, some } from "../index"
+import { IOption, some } from "../option"
+import { List } from "../list"
 
 export class Right<L, R> implements Either<L, R> {
   constructor(public value: R) {}
@@ -20,7 +21,7 @@ export class Right<L, R> implements Either<L, R> {
     return f(this.value)
   }
 
-  toOption(): Option<R> {
+  toOption(): IOption<R> {
     return some<R>(this.value)
   }
 

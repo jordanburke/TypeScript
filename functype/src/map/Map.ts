@@ -1,5 +1,5 @@
 import { ESMap, IESMap } from "./shim"
-import { option, Option } from "../option"
+import { option, IOption } from "../option"
 import { IMap } from "./index"
 import { Type } from "../index"
 import { ITuple, Tuple } from "../tuple"
@@ -81,7 +81,7 @@ export class Map<K, V> implements IMap<K, V> {
     return acc
   }
 
-  get(key: K): Option<V> {
+  get(key: K): IOption<V> {
     return option(this.internalMap.get(key))
   }
 
@@ -93,7 +93,7 @@ export class Map<K, V> implements IMap<K, V> {
     return this.internalMap.size === 0
   }
 
-  orElse(key: K, alternative: Option<V>): Option<V> {
+  orElse(key: K, alternative: IOption<V>): IOption<V> {
     const v = option(this.internalMap.get(key))
     return alternative
   }

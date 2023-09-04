@@ -1,7 +1,9 @@
 import { ParseError } from "../error/ParseError"
 import { Left } from "./Left"
 import { Right } from "./Right"
-import { IFunctor, List, Option } from "../index"
+import { IFunctor } from "../index"
+import { IOption } from "../option"
+import { List } from "../list"
 
 export interface Either<L, R> extends IFunctor<R> {
   value: L | R
@@ -14,7 +16,7 @@ export interface Either<L, R> extends IFunctor<R> {
 
   flatMap<U>(f: (value: R) => Either<L, U>): Either<L, U>
 
-  toOption(): Option<R>
+  toOption(): IOption<R>
 
   toList(): List<R>
 }
@@ -22,15 +24,5 @@ export interface Either<L, R> extends IFunctor<R> {
 // Helper functions
 export const left = <L, R>(value: L): Either<L, R> => new Left(value)
 export const right = <L, R>(value: R): Either<L, R> => new Right(value)
-
-// Usage example:
-export const parseNumber = (input: string): Either<ParseError, number> => {
-  const result = parseInt(input, 10)
-  if (isNaN(result)) {
-    return left(new ParseError(`${result}`))
-  } else {
-    return right(result)
-  }
-}
 
 export { Left, Right }
