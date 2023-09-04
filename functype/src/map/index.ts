@@ -1,9 +1,9 @@
-import { IFunctor, ITraversable } from "../index"
+import { IFunctor, ITraversable, Type } from "../index"
 import { ITuple } from "../tuple"
 import { IOption } from "../option"
 export { Map } from "./Map"
 
-export interface IMap<K, V> extends IFunctor<ITuple<[K, V]>>, ITraversable<ITuple<[K, V]>> {
+export interface IMap<K, V> extends ITraversable<ITuple<[K, V]>> {
   map<U>(f: (value) => U): IMap<K, U>
 
   flatMap<U>(f: (value) => IMap<K, U>): IMap<K, U>

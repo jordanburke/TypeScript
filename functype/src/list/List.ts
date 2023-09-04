@@ -2,33 +2,41 @@ import { IList } from "./index"
 import { IOption, option } from "../option"
 import { IIterable } from "../iterable"
 import { AbstractIterable } from "../iterable/AbstractIterable"
-import { Set } from "../set"
+import { ISet, Set } from "../set"
 
-export class List<T> extends AbstractIterable<T> implements IList<T> {
-  constructor(values?: Iterable<T> | IIterable<T>) {
+export class List<A> extends AbstractIterable<A> implements IList<A> {
+  constructor(values?: Iterable<A> | IIterable<A>) {
     super(values)
   }
 
-  readonly [n: number]: T
+  readonly [n: number]: A
 
-  remove(value: T): List<T> {
-    const newList = new List<T>()
+  map<B>(f: (a: A) => B): List<B> {
+    return new List(super.map(f).toArray())
+  }
+
+  flatMap<B>(f: (a: A) => IIterable<B>): List<B> {
+    return new List(super.flatMap(f).toArray())
+  }
+
+  remove(value: A): List<A> {
+    const newList = new List<A>()
     const index = newList.toArray().indexOf(value)
     return this.removeAt(index)
   }
 
-  contains(value: T): boolean {
+  contains(value: A): boolean {
     return this.toArray().indexOf(value) !== -1
   }
 
-  add(item: T): List<T> {
+  add(item: A): List<A> {
     const temp = this.toArray()
     const values = [...temp, item]
     return new List(values)
   }
 
   // Remove the item from the list by index and return a new list
-  removeAt(index: number): List<T> {
+  removeAt(index: number): List<A> {
     if (index < 0 || index >= this.toArray().length) {
       return this // return the same list if index is out of bounds
     }
@@ -37,15 +45,15 @@ export class List<T> extends AbstractIterable<T> implements IList<T> {
   }
 
   // Retrieve an item by index
-  get(index: number): IOption<T> {
+  get(index: number): IOption<A> {
     return option(this.toArray()[index])
   }
 
-  concat(other: List<T>): List<T> {
+  concat(other: List<A>): List<A> {
     return new List([...this.toArray(), ...other.toArray()])
   }
 
-  toSet(): Set<T> {
+  toSet(): Set<A> {
     return new Set(this.toArray())
   }
 

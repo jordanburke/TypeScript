@@ -96,11 +96,11 @@ export class AbstractIterable<A> implements IIterable<A> {
     return Array.from<A>(this.values)
   }
 
-  reduce<B>(f: (prev: B, curr: A) => B): B {
+  reduce(f: (prev: A, curr: A) => A): A {
     return this.toArray().reduce(f, undefined as any)
   }
 
-  reduceRight<B>(f: (prev: B, curr: A) => B): B {
+  reduceRight(f: (prev: A, curr: A) => A): A {
     return this.toArray().reduceRight(f, undefined as any)
   }
 

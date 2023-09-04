@@ -5,44 +5,43 @@ import { Type } from "../index"
 import { ITuple, Tuple } from "../tuple"
 
 export class Map<K, V> implements IMap<K, V> {
-  private internalMap: IESMap<K, V>
+  private values: IESMap<K, V>
 
-  constructor(entries: [K, V][] = []) {
-    this.internalMap = new ESMap<K, V>(entries)
+  constructor(entries?: readonly (readonly [K, V])[] | IterableIterator<[K, V]> | null) {
+    this.values = new ESMap<K, V>(entries)
   }
 
-  add(item: K): Map<K, V> {
-    return new Map<K, V>()
+  add(item: ITuple<[K, V]>): Map<K, V> {
+    return new Map<K, V>(this.values.set(item[0], item[1]).entries())
   }
 
   remove(value: ITuple<[K, V]>): Map<K, V> {
-    const newMap = new Map<K, V>([...this.internalMap.entries()])
-    newMap.internalMap.delete(value[0])
-    return newMap
+    const newMap = new Map<K, V>([...this.values.entries()])
+    return newMap.values.delete(value[0]) ? newMap : this
   }
 
   contains(value: ITuple<[K, V]>): boolean {
-    return this.internalMap.get(value[0]) === value[1]
+    return this.values.get(value[0]) === value[1]
   }
 
   get size(): number {
-    return this.internalMap.size
+    return this.values.size
   }
 
-  map<U extends Type>(f: (value: V) => U): IMap<K, U> {
+  map<U>(f: (value: V) => U): IMap<K, U> {
     const newEntries: [K, U][] = []
-    for (const [key, value] of this.internalMap.entries()) {
+    for (const [key, value] of this.values.entries()) {
       newEntries.push([key, f(value)])
     }
     return new Map(newEntries)
   }
 
-  flatMap<U extends Type>(f: (value: V) => IMap<K, U>): IMap<K, U> {
+  flatMap<U>(f: (value: V) => IMap<K, U>): IMap<K, U> {
     const newEntries: [K, U][] = []
-    for (const [key, value] of this.internalMap.entries()) {
+    for (const [key, value] of this.values.entries()) {
       const mapped = f(value)
       if (mapped instanceof Map) {
-        for (const [newKey, newValue] of mapped.internalMap.entries()) {
+        for (const [newKey, newValue] of mapped.values.entries()) {
           newEntries.push([newKey, newValue])
         }
       }
@@ -51,7 +50,7 @@ export class Map<K, V> implements IMap<K, V> {
   }
 
   reduce<U extends ITuple<[K, V]>>(f: (acc: U, value: ITuple<[K, V]>) => U): U {
-    const values: [K, V][] = Array.from(this.internalMap.entries())
+    const values: [K, V][] = Array.from(this.values.entries())
     if (values.length === 0) {
       throw new Error("Cannot reduce empty map")
     } else {
@@ -66,7 +65,7 @@ export class Map<K, V> implements IMap<K, V> {
 
   foldLeft<U>(initialValue: U, f: (acc: U, value: ITuple<[K, V]>) => U): U {
     let acc = initialValue
-    for (const value of this.internalMap.entries()) {
+    for (const value of this.values.entries()) {
       acc = f(acc, new Tuple(value))
     }
     return acc
@@ -74,7 +73,7 @@ export class Map<K, V> implements IMap<K, V> {
 
   foldRight<U>(initialValue: U, f: (value: ITuple<[K, V]>, acc: U) => U): U {
     let acc = initialValue
-    const values = Array.from(this.internalMap.entries()).reverse()
+    const values = Array.from(this.values.entries()).reverse()
     for (const value of values) {
       acc = f(new Tuple(value), acc)
     }
@@ -82,19 +81,19 @@ export class Map<K, V> implements IMap<K, V> {
   }
 
   get(key: K): IOption<V> {
-    return option(this.internalMap.get(key))
+    return option(this.values.get(key))
   }
 
   getOrElse(key: K, defaultValue: V): V {
-    return option(this.internalMap.get(key)).getOrElse(defaultValue)
+    return option(this.values.get(key)).getOrElse(defaultValue)
   }
 
   get isEmpty(): boolean {
-    return this.internalMap.size === 0
+    return this.values.size === 0
   }
 
   orElse(key: K, alternative: IOption<V>): IOption<V> {
-    const v = option(this.internalMap.get(key))
+    const v = option(this.values.get(key))
     return alternative
   }
 }

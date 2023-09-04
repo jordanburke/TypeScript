@@ -1,7 +1,7 @@
 import { IOption } from "../option"
 import { IFunctor, Type } from "../index"
 
-export interface IIterable<A extends Type> extends IFunctor<A>, ArrayLike<A> {
+export interface IIterable<A extends Type> extends IFunctor<A> {
   count(p: (x: A) => boolean): number
 
   find(p: (a: A) => boolean): IOption<A>
@@ -22,9 +22,9 @@ export interface IIterable<A extends Type> extends IFunctor<A>, ArrayLike<A> {
 
   //flatten<B>() : Iterable<B>;
 
-  reduce<B>(f: (b: B, a: A) => B): B
+  reduce(f: (b: A, a: A) => A): A
 
-  reduceRight<B>(f: (b: B, a: A) => B): B
+  reduceRight(f: (b: A, a: A) => A): A
 
   foldLeft<B>(z: B): (op: (b: B, a: A) => B) => B
 

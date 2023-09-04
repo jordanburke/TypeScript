@@ -1,4 +1,5 @@
 import { List } from "../../src/list/List"
+import { Set } from "../../src/set/Set"
 
 describe("List", () => {
   beforeEach(async () => {
