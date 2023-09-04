@@ -2,7 +2,7 @@ import { ESMap, IESMap } from "./shim"
 import { option, Option } from "../option"
 import { IMap } from "./index"
 import { Type } from "../index"
-import { ITuple } from "../tuple"
+import { ITuple, Tuple } from "../tuple"
 
 export class Map<K, V> implements IMap<K, V> {
   private internalMap: IESMap<K, V>
@@ -50,32 +50,33 @@ export class Map<K, V> implements IMap<K, V> {
     return new Map(newEntries)
   }
 
-  reduce<U>(f: (acc: U, value: V) => U): U {
-    const values = Array.from(this.internalMap.values())
+  reduce<U extends ITuple<[K, V]>>(f: (acc: U, value: ITuple<[K, V]>) => U): U {
+    const values: [K, V][] = Array.from(this.internalMap.entries())
     if (values.length === 0) {
       throw new Error("Cannot reduce empty map")
     } else {
-      let acc = values[0] as any as U // Assumes that V is assignable to U.
+      let acc: U = new Tuple<[K, V]>(values[0]) as unknown as U // Assumes that V is assignable to U.
       for (let i = 1; i < values.length; i++) {
-        acc = f(acc, values[i])
+        const value = values[i]
+        acc = f(acc, new Tuple<[K, V]>(value)) as U
       }
-      return acc
+      return acc as unknown as U
     }
   }
 
-  foldLeft<U>(initialValue: U, f: (acc: U, value: V) => U): U {
+  foldLeft<U>(initialValue: U, f: (acc: U, value: ITuple<[K, V]>) => U): U {
     let acc = initialValue
-    for (const value of this.internalMap.values()) {
-      acc = f(acc, value)
+    for (const value of this.internalMap.entries()) {
+      acc = f(acc, new Tuple(value))
     }
     return acc
   }
 
-  foldRight<U>(initialValue: U, f: (value: V, acc: U) => U): U {
+  foldRight<U>(initialValue: U, f: (value: ITuple<[K, V]>, acc: U) => U): U {
     let acc = initialValue
-    const values = Array.from(this.internalMap.values()).reverse()
+    const values = Array.from(this.internalMap.entries()).reverse()
     for (const value of values) {
-      acc = f(value, acc)
+      acc = f(new Tuple(value), acc)
     }
     return acc
   }

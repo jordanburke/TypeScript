@@ -1,4 +1,5 @@
-import { Map, None, Some } from "../../src" // Replace with the actual path to your Option classes
+import { Map, None, Some } from "../../src"
+import { Tuple } from "../../src/tuple" // Replace with the actual path to your Option classes
 
 describe("Map", () => {
   let map: Map<string, number>
@@ -24,17 +25,21 @@ describe("Map", () => {
   })
 
   test("reduce should accumulate values", () => {
-    const result = map.reduce<number>((acc, value) => acc + value)
-    expect(result).toBe(6) // 1 + 2 + 3
+    const result = map.reduce(
+      (acc, value) =>
+        new Tuple([acc.getAs<string>(0) + value.getAs<string>(0), acc.getAs<number>(1) + value.getAs<number>(1)]),
+    )
+    expect(result.get(0)).toBe("abc") // "a" + "b" + "c"
+    expect(result.get(1)).toBe(6) // 1 + 2 + 3
   })
 
   test("foldLeft should accumulate values with an initial value", () => {
-    const result = map.foldLeft(0, (acc, value) => acc + value)
+    const result = map.foldLeft(0, (acc, value) => acc + value.getAs<number>(1))
     expect(result).toBe(6) // 1 + 2 + 3
   })
 
   test("foldRight should accumulate values with an initial value", () => {
-    const result = map.foldRight(0, (value, acc) => acc + value)
+    const result = map.foldRight(0, (value, acc) => acc + value.getAs<number>(1))
     expect(result).toBe(6) // 3 + 2 + 1
   })
 

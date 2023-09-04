@@ -23,7 +23,7 @@ export interface ITraversable<T extends Type> extends IFunctor<T> {
   get size(): number
   get isEmpty(): boolean
   contains(value: T): boolean
-  reduce<U extends Type>(f: (acc: U, value: T) => U): U
+  reduce<U extends T>(f: (acc: U, value: T) => U): U
   foldLeft<U extends Type>(initialValue: U, f: (acc: U, value: T) => U): U
   foldRight<U extends Type>(initialValue: U, f: (value: T, acc: U) => U): U
 }
