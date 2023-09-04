@@ -55,12 +55,12 @@ export class Map<K, V> implements IMap<K, V> {
     if (values.length === 0) {
       throw new Error("Cannot reduce empty map")
     } else {
-      let acc: U = new Tuple<[K, V]>(values[0]) as unknown as U // Assumes that V is assignable to U.
+      let acc: U = new Tuple<[K, V]>(values[0]) as unknown as U
       for (let i = 1; i < values.length; i++) {
         const value = values[i]
-        acc = f(acc, new Tuple<[K, V]>(value)) as U
+        acc = f(acc, new Tuple<[K, V]>(value))
       }
-      return acc as unknown as U
+      return acc
     }
   }
 

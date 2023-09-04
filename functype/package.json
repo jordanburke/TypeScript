@@ -1,7 +1,7 @@
 {
   "name": "functype",
-  "version": "0.1.0",
-  "description": "A small functional library for TypeScript",
+  "version": "0.1.1",
+  "description": "A smallish functional library for TypeScript",
   "author": "jordan.burke@gmail.com",
   "license": "MIT",
   "url": "https://github.com/jordanburke/TypeScript/tree/main/functype",
