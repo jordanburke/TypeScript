@@ -1,9 +1,11 @@
 import { PretrainedOptions } from "@xenova/transformers"
 import { Embeddings, EmbeddingsParams } from "langchain/embeddings/base"
 import { dynamicImport } from "@cspell/dynamic-import"
+import { pipeline } from "@xenova/transformers/types/pipelines"
 
 export class TransformersEmbeddings extends Embeddings {
-  private transformers = importTransformers()
+  private _transformers = importTransformers()
+  private _cached: ReturnType<typeof pipeline>
 
   constructor(
     private readonly model: string = "Xenova/gte-small",
@@ -13,13 +15,23 @@ export class TransformersEmbeddings extends Embeddings {
     super(params)
   }
 
+  private async load() {
+    if (this._cached === undefined) {
+      const transformers = await this._transformers
+      this._cached = transformers.pipeline("feature-extraction", this.model, this.pretrainOptions)
+      return this._cached
+    } else {
+      return this._cached
+    }
+  }
+
   async getEmbedding(
     text: string,
     precision: number = 7,
     options = { pooling: "mean", normalize: false },
   ): Promise<number[]> {
-    const transformers = await this.transformers
-    const pipe = await transformers.pipeline("feature-extraction", this.model, this.pretrainOptions)
+    const transformers = await this._transformers
+    const pipe = await this.load()
     const output = await pipe(text, options)
     const roundedOutput = Array.from(output.data as number[]).map((value: number) =>
       parseFloat(value.toFixed(precision)),
