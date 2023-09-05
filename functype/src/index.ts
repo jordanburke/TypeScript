@@ -15,9 +15,3 @@ export interface ITraversable<A extends Type> extends IFunctor<A> {
 
   foldRight<B>(z: B): (op: (a: A, b: B) => B) => B
 }
-
-// export interface ICollection<T extends Type> {
-//   add(value: T): ICollection<T>
-//
-//   remove(value: T): ICollection<T>
-// }

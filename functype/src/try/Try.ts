@@ -1,6 +1,16 @@
 import { Either, Left, Right } from "../either"
 
-interface ITry<T> {}
+interface ITry<T> {
+  isSuccess(): boolean
+
+  isFailure(): boolean
+
+  getOrElse(defaultValue: T): T
+
+  orElse(alternative: ITry<T>): ITry<T>
+
+  toEither(): Either<Error, T>
+}
 
 export class Try<T> implements ITry<T> {
   private readonly value: T | null
