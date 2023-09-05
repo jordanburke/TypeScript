@@ -30,7 +30,6 @@ export class TransformersEmbeddings extends Embeddings {
   }
 
   async getEmbedding(text: string, precision: number = 7): Promise<number[]> {
-    const transformers = await this._transformers
     const pipe = await this.load()
     const output = await pipe(text, this.featureParams)
     const roundedOutput = Array.from(output.data as number[]).map((value: number) =>
