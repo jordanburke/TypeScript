@@ -1,11 +1,13 @@
 import { option } from "../option"
 import { IIterable } from "../iterable"
-import { Seq } from "../iterable/Seq"
+import { Seq } from "../iterable"
 import { ICollection } from "../collections"
-import { ISet } from "../set"
-import { Set } from "../set/Set"
-import { IOption } from "../option/IOption"
-import { IList } from "./IList"
+import { Set } from "../set"
+import { Option } from "../option"
+
+export interface IList<T> extends IIterable<T>, ArrayLike<T> {
+  add(item: T): IList<T>
+}
 
 export class List<A> extends Seq<A> implements IList<A>, ICollection<A> {
   constructor(values?: Iterable<A> | IIterable<A>) {
@@ -48,7 +50,7 @@ export class List<A> extends Seq<A> implements IList<A>, ICollection<A> {
   }
 
   // Retrieve an item by index
-  get(index: number): IOption<A> {
+  get(index: number): Option<A> {
     return option(this.toArray()[index])
   }
 

@@ -1,6 +1,5 @@
 import { Map } from "../../src/map"
-import { Some } from "../../src/option/Some"
-import { None } from "../../src/option/None"
+import { Some, None } from "../../src/option"
 import { Tuple } from "../../src/tuple"
 
 describe("Map", () => {

@@ -1,9 +1,11 @@
-import { ISet } from "./index"
 import { ESSet, IESSet } from "./shim"
-import { Seq } from "../iterable/Seq"
-import { IIterable } from "../iterable"
-import { List } from "../list/List"
-import { IList } from "../list/IList"
+import { IIterable, Seq } from "../iterable"
+import { IList, List } from "../list"
+import { ICollection } from "../collections"
+
+export interface ISet<T> extends IIterable<T>, ICollection<T> {
+  has(value: T): boolean
+}
 
 export class Set<A> extends Seq<A> implements ISet<A> {
   constructor(iterable?: Iterable<A>) {

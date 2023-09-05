@@ -1,13 +1,13 @@
 import { option } from "../../src/option"
-import { IOption } from "../../src/option/IOption"
+import { Option } from "../../src/option/Option"
 
 describe("Option", () => {
   beforeEach(async () => {
     // Nothing
   })
 
-  const something: IOption<string> = option<string>("hello")
-  const nothing: IOption<string> = option()
+  const something: Option<string> = option<string>("hello")
+  const nothing: Option<string> = option()
 
   // console.log(result1); // Some { value: 246 }
   // console.log(result2); // None

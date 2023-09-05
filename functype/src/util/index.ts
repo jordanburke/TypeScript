@@ -1,5 +1,6 @@
 import { ParseError } from "../error/ParseError"
-import { Either, left, right } from "../either"
+import { left, right } from "../either"
+import { Either } from "../either"
 
 export const parseNumber = (input: string): Either<ParseError, number> => {
   const result = parseInt(input, 10)

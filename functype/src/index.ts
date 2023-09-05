@@ -15,3 +15,13 @@ export interface ITraversable<A extends Type> extends IFunctor<A> {
 
   foldRight<B>(z: B): (op: (a: A, b: B) => B) => B
 }
+
+export * from "./functor"
+export * from "./iterable"
+export * from "./list"
+export * from "./map"
+export * from "./option"
+export * from "./either"
+export * from "./set"
+export * from "./tuple"
+export * from "./try"

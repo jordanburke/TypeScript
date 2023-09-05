@@ -1,6 +1,6 @@
-import { Either, Left, Right } from "../either"
+import { Left, Right, Either } from "../either"
 
-interface ITry<T> {
+export interface ITry<T> {
   isSuccess(): boolean
 
   isFailure(): boolean

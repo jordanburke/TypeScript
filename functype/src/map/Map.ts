@@ -1,13 +1,24 @@
 import { ESMap, IESMap } from "./shim"
-import { option } from "../option"
-import { IMap } from "./index"
 import { ITuple, Tuple } from "../tuple"
 import { Seq } from "../iterable/Seq"
-import { List } from "../list/List"
 import { ISet } from "../set"
-import { Set } from "../set/Set"
-import { IOption } from "../option/IOption"
-import { IList } from "../list/IList"
+import { Set } from "../set"
+import { Option, option } from "../option"
+import { IList, List } from "../list"
+import { ITraversable } from "../index"
+import { ICollection } from "../collections"
+
+export interface IMap<K, V> extends ITraversable<ITuple<[K, V]>>, ICollection<ITuple<[K, V]>> {
+  map<U>(f: (value) => U): IMap<K, U>
+
+  flatMap<U>(f: (value) => IMap<K, U>): IMap<K, U>
+
+  get(key: K): Option<V>
+
+  getOrElse(key: K, defaultValue: V): V
+
+  orElse(key: K, alternative: Option<V>): Option<V>
+}
 
 export class Map<K, V> implements IMap<K, V> {
   private values: IESMap<K, V>
@@ -80,7 +91,7 @@ export class Map<K, V> implements IMap<K, V> {
     }
   }
 
-  get(key: K): IOption<V> {
+  get(key: K): Option<V> {
     return option(this.values.get(key))
   }
 
@@ -92,7 +103,7 @@ export class Map<K, V> implements IMap<K, V> {
     return this.values.size === 0
   }
 
-  orElse(key: K, alternative: IOption<V>): IOption<V> {
+  orElse(key: K, alternative: Option<V>): Option<V> {
     const v = option(this.values.get(key))
     return alternative
   }

@@ -1,6 +1,6 @@
 import { none, option } from "../option"
 import { IIterable } from "./index"
-import { IOption } from "../option/IOption"
+import { Option } from "../option"
 import { isIterable } from "../util/isIterable"
 export class Seq<A> implements IIterable<A> {
   protected readonly values: Iterable<A>
@@ -67,7 +67,7 @@ export class Seq<A> implements IIterable<A> {
     return new Seq<A>(this.toArray().filter((x) => !p(x)))
   }
 
-  find(p: (a: A) => boolean): IOption<A> {
+  find(p: (a: A) => boolean): Option<A> {
     const result = this.toArray().find(p)
     return option(result)
   }
@@ -76,7 +76,7 @@ export class Seq<A> implements IIterable<A> {
     return this.values[0]
   }
 
-  get headOption(): IOption<A> {
+  get headOption(): Option<A> {
     if (this.isEmpty) {
       return option(this.head)
     } else {
