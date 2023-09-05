@@ -1,6 +1,6 @@
 {
   "name": "langchain-transformers",
-  "version": "0.0.144",
+  "version": "0.0.145",
   "description": "A langchain adapter for Huggingface transformers",
   "keywords": [],
   "author": "jordan.burke@gmail.com",

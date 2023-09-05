@@ -11,6 +11,10 @@ export class TransformersEmbeddings extends Embeddings {
     private readonly model: string = "Xenova/gte-small",
     readonly params: EmbeddingsParams = {},
     private readonly pretrainOptions: PretrainedOptions = {},
+    private readonly featureParams: {
+      pooling?: string
+      normalize?: boolean
+    } = { pooling: "mean", normalize: false },
   ) {
     super(params)
   }
@@ -25,14 +29,10 @@ export class TransformersEmbeddings extends Embeddings {
     }
   }
 
-  async getEmbedding(
-    text: string,
-    precision: number = 7,
-    options = { pooling: "mean", normalize: false },
-  ): Promise<number[]> {
+  async getEmbedding(text: string, precision: number = 7): Promise<number[]> {
     const transformers = await this._transformers
     const pipe = await this.load()
-    const output = await pipe(text, options)
+    const output = await pipe(text, this.featureParams)
     const roundedOutput = Array.from(output.data as number[]).map((value: number) =>
       parseFloat(value.toFixed(precision)),
     )
