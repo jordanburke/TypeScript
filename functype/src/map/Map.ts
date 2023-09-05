@@ -1,11 +1,20 @@
 import { ESMap, IESMap } from "./shim"
-import { option, IOption } from "../option"
+import { option } from "../option"
 import { IMap } from "./index"
-import { Type } from "../index"
 import { ITuple, Tuple } from "../tuple"
+import { Seq } from "../iterable/Seq"
+import { List } from "../list/List"
+import { ISet } from "../set"
+import { Set } from "../set/Set"
+import { IOption } from "../option/IOption"
+import { IList } from "../list/IList"
 
 export class Map<K, V> implements IMap<K, V> {
   private values: IESMap<K, V>
+
+  private get entries() {
+    return Array.from(this.values.entries()).map(([key, value]) => new Tuple<[K, V]>([key, value]))
+  }
 
   constructor(entries?: readonly (readonly [K, V])[] | IterableIterator<[K, V]> | null) {
     this.values = new ESMap<K, V>(entries)
@@ -49,35 +58,26 @@ export class Map<K, V> implements IMap<K, V> {
     return new Map(newEntries)
   }
 
-  reduce<U extends ITuple<[K, V]>>(f: (acc: U, value: ITuple<[K, V]>) => U): U {
-    const values: [K, V][] = Array.from(this.values.entries())
-    if (values.length === 0) {
-      throw new Error("Cannot reduce empty map")
-    } else {
-      let acc: U = new Tuple<[K, V]>(values[0]) as unknown as U
-      for (let i = 1; i < values.length; i++) {
-        const value = values[i]
-        acc = f(acc, new Tuple<[K, V]>(value))
-      }
-      return acc
+  reduce(f: (acc: Tuple<[K, V]>, value: Tuple<[K, V]>) => Tuple<[K, V]>): Tuple<[K, V]> {
+    return new Seq(this.entries).reduce(f)
+  }
+
+  reduceRight(f: (acc: Tuple<[K, V]>, value: Tuple<[K, V]>) => Tuple<[K, V]>): Tuple<[K, V]> {
+    return new Seq(this.entries).reduceRight(f)
+  }
+
+  foldLeft<B>(z: B): (op: (b: B, a: ITuple<[K, V]>) => B) => B {
+    const iterables = new Seq(this.entries)
+    return (f: (b: B, a: ITuple<[K, V]>) => B) => {
+      return iterables.foldLeft(z)(f)
     }
   }
 
-  foldLeft<U>(initialValue: U, f: (acc: U, value: ITuple<[K, V]>) => U): U {
-    let acc = initialValue
-    for (const value of this.values.entries()) {
-      acc = f(acc, new Tuple(value))
+  foldRight<B>(z: B): (op: (a: ITuple<[K, V]>, b: B) => B) => B {
+    const iterables = new Seq(this.entries)
+    return (f: (a: ITuple<[K, V]>, b: B) => B) => {
+      return iterables.foldRight(z)(f)
     }
-    return acc
-  }
-
-  foldRight<U>(initialValue: U, f: (value: ITuple<[K, V]>, acc: U) => U): U {
-    let acc = initialValue
-    const values = Array.from(this.values.entries()).reverse()
-    for (const value of values) {
-      acc = f(new Tuple(value), acc)
-    }
-    return acc
   }
 
   get(key: K): IOption<V> {
@@ -95,6 +95,14 @@ export class Map<K, V> implements IMap<K, V> {
   orElse(key: K, alternative: IOption<V>): IOption<V> {
     const v = option(this.values.get(key))
     return alternative
+  }
+
+  toList(): IList<Tuple<[K, V]>> {
+    return new List(this.entries)
+  }
+
+  toSet(): ISet<Tuple<[K, V]>> {
+    return new Set(this.entries)
   }
 }
 

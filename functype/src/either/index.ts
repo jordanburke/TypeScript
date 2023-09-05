@@ -1,9 +1,8 @@
-import { ParseError } from "../error/ParseError"
 import { Left } from "./Left"
 import { Right } from "./Right"
-import { IFunctor } from "../index"
-import { IOption } from "../option"
-import { List } from "../list"
+import { List } from "../list/List"
+import { IFunctor } from "../functor"
+import { IOption } from "../option/IOption"
 
 export interface Either<L, R> extends IFunctor<R> {
   value: L | R

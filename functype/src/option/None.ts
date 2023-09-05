@@ -1,49 +1,60 @@
-import { IOption } from "./index"
-import { List } from "../list"
-import { Type } from "../index"
+import { List } from "../list/List"
 
-export class None<T extends Type> implements IOption<T> {
+import { Type } from "../functor"
+import { IOption } from "./IOption"
+import { Seq } from "../iterable/Seq"
+import { IIterable } from "../iterable"
+
+export class None<A extends Type> implements IOption<A> {
   get isEmpty(): boolean {
     return true
   }
 
-  get(): T {
+  get(): A {
     throw new Error("Cannot call get() on a None")
   }
 
-  getOrElse(defaultValue: T): T {
+  getOrElse(defaultValue: A): A {
     return defaultValue
   }
 
-  orElse(alternative: IOption<T>): IOption<T> {
+  orElse(alternative: IOption<A>): IOption<A> {
     return alternative
   }
 
-  map<U extends Type>(f: (value: T) => U): IOption<U> {
+  map<U extends Type>(f: (value: A) => U): IOption<U> {
     return new None<U>()
   }
 
-  flatMap<U extends Type>(f: (value: T) => IOption<U>): IOption<U> {
+  flatMap<U extends Type>(f: (value: A) => IOption<U>): IOption<U> {
     return new None<U>()
   }
 
-  reduce<U>(f: (acc: U, value: T) => U): U {
+  reduce(f: (acc: A, value: A) => A): A {
     return f(undefined as any, undefined as any)
   }
 
-  foldLeft<U>(initialValue: U, f: (acc: U, value: T) => U): U {
-    return initialValue
+  reduceRight(f: (b: A, a: A) => A): A {
+    return f(undefined as any, undefined as any)
   }
 
-  foldRight<U>(initialValue: U, f: (value: T, acc: U) => U): U {
-    return initialValue
+  foldLeft<B>(z: B): (op: (b: B, a: A) => B) => B {
+    return (f: (b: B, a: A) => B) => {
+      return z
+    }
   }
 
-  toList(): List<T> {
-    return new List<T>()
+  foldRight<B>(z: B): (op: (a: A, b: B) => B) => B {
+    return (f: (a: A, b: B) => B) => {
+      return z
+    }
   }
 
-  contains(value: T): boolean {
+  toList(): IIterable<A> {
+    return new Seq<A>()
+  }
+
+  contains(value: A): boolean {
     return false
   }
 

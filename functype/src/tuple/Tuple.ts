@@ -1,5 +1,5 @@
-import { ArrayType } from "../index"
 import { ITuple } from "./index"
+import { ArrayType } from "../functor"
 
 export class Tuple<T extends ArrayType> implements ITuple<T> {
   constructor(private readonly values: T) {}

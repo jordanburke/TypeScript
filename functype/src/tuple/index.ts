@@ -1,4 +1,4 @@
-import { ArrayType, IArrayFunctor } from "../index"
+import { ArrayType, IArrayFunctor } from "../functor"
 
 export { Tuple } from "./Tuple"
 

@@ -1,6 +1,7 @@
 import { Either, Left } from "./index"
-import { IOption, some } from "../option"
-import { List } from "../list"
+import { some } from "../option"
+import { List } from "../list/List"
+import { IOption } from "../option/IOption"
 
 export class Right<L, R> implements Either<L, R> {
   constructor(public value: R) {}

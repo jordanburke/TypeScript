@@ -1,10 +1,13 @@
-import { IList } from "./index"
-import { IOption, option } from "../option"
+import { option } from "../option"
 import { IIterable } from "../iterable"
-import { AbstractIterable } from "../iterable/AbstractIterable"
-import { ISet, Set } from "../set"
+import { Seq } from "../iterable/Seq"
+import { ICollection } from "../collections"
+import { ISet } from "../set"
+import { Set } from "../set/Set"
+import { IOption } from "../option/IOption"
+import { IList } from "./IList"
 
-export class List<A> extends AbstractIterable<A> implements IList<A> {
+export class List<A> extends Seq<A> implements IList<A>, ICollection<A> {
   constructor(values?: Iterable<A> | IIterable<A>) {
     super(values)
   }
@@ -51,6 +54,10 @@ export class List<A> extends AbstractIterable<A> implements IList<A> {
 
   concat(other: List<A>): List<A> {
     return new List([...this.toArray(), ...other.toArray()])
+  }
+
+  toList(): IList<A> {
+    return this
   }
 
   toSet(): Set<A> {

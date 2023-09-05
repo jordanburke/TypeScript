@@ -1,13 +1,13 @@
-import { IOption, none, option } from "../option"
-import { isIterable, Type } from "../index"
+import { none, option } from "../option"
 import { IIterable } from "./index"
-
-export class AbstractIterable<A> implements IIterable<A> {
+import { IOption } from "../option/IOption"
+import { isIterable } from "../util/isIterable"
+export class Seq<A> implements IIterable<A> {
   protected readonly values: Iterable<A>
   constructor(values?: Iterable<A> | IIterable<A>) {
     if (isIterable(values)) {
       this.values = values
-    } else if (values instanceof AbstractIterable) {
+    } else if (values instanceof Seq) {
       this.values = values.toArray()
     } else if (!values) {
       this.values = []
@@ -21,18 +21,18 @@ export class AbstractIterable<A> implements IIterable<A> {
   }
 
   map<B>(f: (a: A) => B): IIterable<B> {
-    return new AbstractIterable(this.toArray().map(f))
+    return new Seq(this.toArray().map(f))
   }
 
   flatMap<B>(f: (a: A) => IIterable<B>): IIterable<B> {
     const tempArray: B[] = []
     for (const item of this.values) {
       const mappedList = f(item)
-      if (mappedList instanceof AbstractIterable) {
+      if (mappedList instanceof Seq) {
         tempArray.push(...mappedList.values)
       }
     }
-    return new AbstractIterable(tempArray)
+    return new Seq(tempArray)
   }
 
   forEach(f: (a: A) => void) {
@@ -60,11 +60,11 @@ export class AbstractIterable<A> implements IIterable<A> {
   }
 
   filter(p: (a: A) => boolean): IIterable<A> {
-    return new AbstractIterable<A>(this.toArray().filter(p))
+    return new Seq<A>(this.toArray().filter(p))
   }
 
   filterNot(p: (a: A) => boolean): IIterable<A> {
-    return new AbstractIterable<A>(this.toArray().filter((x) => !p(x)))
+    return new Seq<A>(this.toArray().filter((x) => !p(x)))
   }
 
   find(p: (a: A) => boolean): IOption<A> {
@@ -97,11 +97,11 @@ export class AbstractIterable<A> implements IIterable<A> {
   }
 
   reduce(f: (prev: A, curr: A) => A): A {
-    return this.toArray().reduce(f, undefined as any)
+    return this.toArray().reduce(f)
   }
 
   reduceRight(f: (prev: A, curr: A) => A): A {
-    return this.toArray().reduceRight(f, undefined as any)
+    return this.toArray().reduceRight(f)
   }
 
   foldLeft<B>(z: B): (op: (b: B, a: A) => B) => B {

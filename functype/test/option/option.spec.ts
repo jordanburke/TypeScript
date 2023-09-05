@@ -1,4 +1,5 @@
-import { IOption, option } from "../../src/option"
+import { option } from "../../src/option"
+import { IOption } from "../../src/option/IOption"
 
 describe("Option", () => {
   beforeEach(async () => {

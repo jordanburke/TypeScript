@@ -1,9 +1,11 @@
 import { ISet } from "./index"
 import { ESSet, IESSet } from "./shim"
-import { AbstractIterable } from "../iterable/AbstractIterable"
+import { Seq } from "../iterable/Seq"
 import { IIterable } from "../iterable"
+import { List } from "../list/List"
+import { IList } from "../list/IList"
 
-export class Set<A> extends AbstractIterable<A> implements ISet<A> {
+export class Set<A> extends Seq<A> implements ISet<A> {
   constructor(iterable?: Iterable<A>) {
     super(new ESSet<A>(iterable))
   }
@@ -31,5 +33,13 @@ export class Set<A> extends AbstractIterable<A> implements ISet<A> {
 
   flatMap<B>(f: (a: A) => IIterable<B>): Set<B> {
     return new Set(super.flatMap(f).toArray())
+  }
+
+  toList(): IList<A> {
+    return new List(this.toArray())
+  }
+
+  toSet(): ISet<A> {
+    return this
   }
 }

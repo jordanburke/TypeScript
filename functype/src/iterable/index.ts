@@ -1,12 +1,12 @@
-import { IOption } from "../option"
-import { IFunctor, Type } from "../index"
+import { IFunctor, Type } from "../functor"
+import { IOption } from "../option/IOption"
 
 export interface IIterable<A extends Type> extends IFunctor<A> {
   count(p: (x: A) => boolean): number
 
   find(p: (a: A) => boolean): IOption<A>
 
-  forEach(f: (a: A) => void)
+  forEach(f: (a: A) => void): void
 
   // drop(n: number): IIterable<A>
   //
@@ -43,8 +43,4 @@ export interface IIterable<A extends Type> extends IFunctor<A> {
   get size(): number
 
   toArray(): readonly A[]
-
-  // toList(): IList<A>
-  //
-  // toSet(): ISet<A>
 }

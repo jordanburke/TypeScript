@@ -1,6 +1,7 @@
 import { Map } from "../../src/map"
-import { Some, None } from "../../src/option"
-import { Tuple } from "../../src/tuple" // Replace with the actual path to your Option classes
+import { Some } from "../../src/option/Some"
+import { None } from "../../src/option/None"
+import { Tuple } from "../../src/tuple"
 
 describe("Map", () => {
   let map: Map<string, number>
@@ -35,12 +36,12 @@ describe("Map", () => {
   })
 
   test("foldLeft should accumulate values with an initial value", () => {
-    const result = map.foldLeft(0, (acc, value) => acc + value.getAs<number>(1))
+    const result = map.foldLeft(0)((acc, value) => acc + value.getAs<number>(1))
     expect(result).toBe(6) // 1 + 2 + 3
   })
 
   test("foldRight should accumulate values with an initial value", () => {
-    const result = map.foldRight(0, (value, acc) => acc + value.getAs<number>(1))
+    const result = map.foldRight(0)((value, acc) => acc + value.getAs<number>(1))
     expect(result).toBe(6) // 3 + 2 + 1
   })
 

@@ -1,50 +1,60 @@
-import { IOption } from "./index"
-import { List } from "../list"
-import { ITraversable, Type } from "../index"
-export class Some<T extends Type> implements IOption<T> {
-  constructor(private value: T) {}
+import { Type } from "../functor"
+import { IOption } from "./IOption"
+import { IIterable } from "../iterable"
+import { Seq } from "../iterable/Seq"
+
+export class Some<A extends Type> implements IOption<A> {
+  constructor(private value: A) {}
 
   get isEmpty(): boolean {
     return false
   }
 
-  get(): T {
+  get(): A {
     return this.value
   }
 
-  getOrElse(defaultValue: T): T {
+  getOrElse(defaultValue: A): A {
     return this.value
   }
 
-  orElse(alternative: IOption<T>): IOption<T> {
+  orElse(alternative: IOption<A>): IOption<A> {
     return this
   }
 
-  map<U extends Type>(f: (value: T) => U): IOption<U> {
+  map<U extends Type>(f: (value: A) => U): IOption<U> {
     return new Some(f(this.value))
   }
 
-  flatMap<U extends Type>(f: (value: T) => IOption<U>): IOption<U> {
+  flatMap<U extends Type>(f: (value: A) => IOption<U>): IOption<U> {
     return f(this.value)
   }
 
-  reduce<U>(f: (acc: U, value: T) => U): U {
+  reduce<U>(f: (acc: U, value: A) => U): U {
     return f(undefined as any, this.value)
   }
 
-  foldLeft<U>(initialValue: U, f: (acc: U, value: T) => U): U {
-    return f(initialValue, this.value)
+  reduceRight<U>(f: (acc: U, value: A) => U): U {
+    return f(undefined as any, this.value)
   }
 
-  foldRight<U>(initialValue: U, f: (value: T, acc: U) => U): U {
-    return f(this.value, initialValue)
+  foldLeft<B>(z: B): (op: (b: B, a: A) => B) => B {
+    return (f: (b: B, a: A) => B) => {
+      return f(z, this.value)
+    }
   }
 
-  toList(): List<T> {
-    return new List<T>([this.value])
+  foldRight<B>(z: B): (op: (a: A, b: B) => B) => B {
+    return (f: (a: A, b: B) => B) => {
+      return f(this.value, z)
+    }
   }
 
-  contains(value: T): boolean {
+  toList(): IIterable<A> {
+    return new Seq<A>([this.value])
+  }
+
+  contains(value: A): boolean {
     return false
   }
 
