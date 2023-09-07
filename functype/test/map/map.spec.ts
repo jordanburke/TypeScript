@@ -22,6 +22,7 @@ describe("Map", () => {
 
   test("flatMap should transform values and flatten", () => {
     const newMap = map.flatMap((value) => new Map([["a", value * 2]]))
+    console.log(newMap)
     expect(newMap.get("a").getOrElse(0)).toBe(6) // Last one overwrites: 3 * 2 = 6
   })
 

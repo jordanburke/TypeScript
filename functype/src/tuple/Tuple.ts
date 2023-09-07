@@ -31,7 +31,7 @@ export class Tuple<T extends ArrayType> implements ITuple<T> {
     const value = this.values[index]
     if (f) {
       if (f(this.values)) {
-        return value as any as U
+        return value as U
       } else {
         throw new Error("Cannot cast tuple value")
       }

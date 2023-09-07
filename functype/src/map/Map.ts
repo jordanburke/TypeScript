@@ -1,8 +1,7 @@
 import { ESMap, IESMap } from "./shim"
 import { ITuple, Tuple } from "../tuple"
-import { Seq } from "../iterable/Seq"
-import { ISet } from "../set"
-import { Set } from "../set"
+import { Seq } from "../iterable"
+import { ISet, Set } from "../set"
 import { Option, option } from "../option"
 import { IList, List } from "../list"
 import { ITraversable } from "../index"
@@ -49,11 +48,7 @@ export class Map<K, V> implements IMap<K, V> {
   }
 
   map<U>(f: (value: V) => U): IMap<K, U> {
-    const newEntries: [K, U][] = []
-    for (const [key, value] of this.values.entries()) {
-      newEntries.push([key, f(value)])
-    }
-    return new Map(newEntries)
+    return new Map(Array.from(this.values.entries()).map((kv) => [kv[0], f(kv[1])]))
   }
 
   flatMap<U>(f: (value: V) => IMap<K, U>): IMap<K, U> {
@@ -114,6 +109,10 @@ export class Map<K, V> implements IMap<K, V> {
 
   toSet(): ISet<Tuple<[K, V]>> {
     return new Set(this.entries)
+  }
+
+  toString(): string {
+    return `Map(${this.entries.toString()})`
   }
 }
 

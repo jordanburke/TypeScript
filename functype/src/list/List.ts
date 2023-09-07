@@ -17,11 +17,11 @@ export class List<A> extends Seq<A> implements IList<A>, ICollection<A> {
   readonly [n: number]: A
 
   map<B>(f: (a: A) => B): List<B> {
-    return new List(super.map(f).toArray())
+    return new List(super.map(f))
   }
 
   flatMap<B>(f: (a: A) => IIterable<B>): List<B> {
-    return new List(super.flatMap(f).toArray())
+    return new List(super.flatMap(f))
   }
 
   remove(value: A): List<A> {
