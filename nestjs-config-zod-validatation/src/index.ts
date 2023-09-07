@@ -1,4 +1,4 @@
-import { ZodSchema } from "zod"
+import { ZodError, ZodSchema } from "zod"
 
 /**
  * This is a workaround for the fact that NestJS Config doesn't support Zod Validation
@@ -21,7 +21,7 @@ export const validationOptions = {
  */
 export const validationSchema = (
   schema: ZodSchema,
-  logCallback?: (status: "none" | "success" | "error", result?: any, error?: any) => void,
+  logCallback?: (status: "none" | "success" | "error", result?: unknown, error?: ZodError) => void,
 ) => {
   return {
     validate: (config: unknown, validationOptions: { validate: (config: unknown, schema: ZodSchema) => any }) => {
