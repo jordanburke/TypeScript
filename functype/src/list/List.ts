@@ -1,16 +1,16 @@
 import { option } from "../option"
-import { IIterable } from "../iterable"
+import { _Iterable_ } from "../iterable"
 import { Seq } from "../iterable"
-import { ICollection } from "../collections"
+import { _Collection } from "../collections"
 import { Set } from "../set"
-import { Option } from "../option"
+import { _Option_ } from "../option"
 
-export interface IList<T> extends IIterable<T>, ArrayLike<T> {
-  add(item: T): IList<T>
+export interface _List_<T> extends _Iterable_<T>, ArrayLike<T> {
+  add(item: T): _List_<T>
 }
 
-export class List<A> extends Seq<A> implements IList<A>, ICollection<A> {
-  constructor(values?: Iterable<A> | IIterable<A>) {
+export class List<A> extends Seq<A> implements _List_<A>, _Collection<A> {
+  constructor(values?: Iterable<A> | _Iterable_<A>) {
     super(values)
   }
 
@@ -20,7 +20,7 @@ export class List<A> extends Seq<A> implements IList<A>, ICollection<A> {
     return new List(super.map(f))
   }
 
-  flatMap<B>(f: (a: A) => IIterable<B>): List<B> {
+  flatMap<B>(f: (a: A) => _Iterable_<B>): List<B> {
     return new List(super.flatMap(f))
   }
 
@@ -50,7 +50,7 @@ export class List<A> extends Seq<A> implements IList<A>, ICollection<A> {
   }
 
   // Retrieve an item by index
-  get(index: number): Option<A> {
+  get(index: number): _Option_<A> {
     return option(this.toArray()[index])
   }
 
@@ -58,7 +58,7 @@ export class List<A> extends Seq<A> implements IList<A>, ICollection<A> {
     return new List([...this.toArray(), ...other.toArray()])
   }
 
-  toList(): IList<A> {
+  toList(): _List_<A> {
     return this
   }
 

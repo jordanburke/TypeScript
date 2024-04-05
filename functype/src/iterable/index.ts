@@ -1,10 +1,10 @@
-import { IFunctor, Type } from "../functor"
-import { Option } from "../option"
+import { _Functor_, Type } from "../functor"
+import { _Option_ } from "../option"
 
-export interface IIterable<A extends Type> extends IFunctor<A> {
+export type _Iterable_<A extends Type> = {
   count(p: (x: A) => boolean): number
 
-  find(p: (a: A) => boolean): Option<A>
+  find(p: (a: A) => boolean): _Option_<A>
 
   forEach(f: (a: A) => void): void
 
@@ -16,9 +16,9 @@ export interface IIterable<A extends Type> extends IFunctor<A> {
 
   exists(p: (a: A) => boolean): Boolean
 
-  filter(p: (a: A) => boolean): IIterable<A>
+  filter(p: (a: A) => boolean): _Iterable_<A>
 
-  filterNot(p: (a: A) => boolean): IIterable<A>
+  filterNot(p: (a: A) => boolean): _Iterable_<A>
 
   //flatten<B>() : Iterable<B>;
 
@@ -32,17 +32,17 @@ export interface IIterable<A extends Type> extends IFunctor<A> {
 
   get head(): A
 
-  get headOption(): Option<A>
+  get headOption(): _Option_<A>
 
   get isEmpty(): boolean
 
-  map<B extends Type>(f: (a: A) => B): IIterable<B>
+  map<B extends Type>(f: (a: A) => B): _Iterable_<B>
 
-  flatMap<B extends Type>(f: (a: A) => IIterable<B>): IIterable<B>
+  flatMap<B extends Type>(f: (a: A) => _Iterable_<B>): _Iterable_<B>
 
   get size(): number
 
   toArray(): readonly A[]
-}
+} & _Functor_<A>
 
 export { Seq } from "./Seq"

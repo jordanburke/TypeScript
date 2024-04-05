@@ -1,25 +1,28 @@
 import { ESMap, IESMap } from "./shim"
-import { ITuple, Tuple } from "../tuple"
+import { _Tuple_, Tuple } from "../tuple"
 import { Seq } from "../iterable"
-import { ISet, Set } from "../set"
-import { Option, option } from "../option"
-import { IList, List } from "../list"
-import { ITraversable } from "../index"
-import { ICollection } from "../collections"
+import { _Set_, Set } from "../set"
+import { _Option_, option } from "../option"
+import { _List_, List } from "../list"
+import { _Traversable_ } from "../index"
+import { _Collection } from "../collections"
 
-export interface IMap<K, V> extends ITraversable<ITuple<[K, V]>>, ICollection<ITuple<[K, V]>> {
-  map<U>(f: (value) => U): IMap<K, U>
+type SafeTraversable<K, V> = Omit<_Traversable_<_Tuple_<[K, V]>>, "map" | "flatMap">
 
-  flatMap<U>(f: (value) => IMap<K, U>): IMap<K, U>
+export type _Map_<K, V> = {
+  map<U>(f: (value) => U): _Map_<K, U>
 
-  get(key: K): Option<V>
+  flatMap<U>(f: (value) => _Map_<K, U>): _Map_<K, U>
+
+  get(key: K): _Option_<V>
 
   getOrElse(key: K, defaultValue: V): V
 
-  orElse(key: K, alternative: Option<V>): Option<V>
-}
+  orElse(key: K, alternative: _Option_<V>): _Option_<V>
+} & SafeTraversable<K, V> &
+  _Collection<_Tuple_<[K, V]>>
 
-export class Map<K, V> implements IMap<K, V> {
+export class Map<K, V> implements _Map_<K, V> {
   private values: IESMap<K, V>
 
   private get entries() {
@@ -30,16 +33,16 @@ export class Map<K, V> implements IMap<K, V> {
     this.values = new ESMap<K, V>(entries)
   }
 
-  add(item: ITuple<[K, V]>): Map<K, V> {
+  add(item: _Tuple_<[K, V]>): Map<K, V> {
     return new Map<K, V>(this.values.set(item[0], item[1]).entries())
   }
 
-  remove(value: ITuple<[K, V]>): Map<K, V> {
+  remove(value: _Tuple_<[K, V]>): Map<K, V> {
     const newMap = new Map<K, V>([...this.values.entries()])
     return newMap.values.delete(value[0]) ? newMap : this
   }
 
-  contains(value: ITuple<[K, V]>): boolean {
+  contains(value: _Tuple_<[K, V]>): boolean {
     return this.values.get(value[0]) === value[1]
   }
 
@@ -47,11 +50,11 @@ export class Map<K, V> implements IMap<K, V> {
     return this.values.size
   }
 
-  map<U>(f: (value: V) => U): IMap<K, U> {
+  map<U>(f: (value: V) => U): _Map_<K, U> {
     return new Map(Array.from(this.values.entries()).map((kv) => [kv[0], f(kv[1])]))
   }
 
-  flatMap<U>(f: (value: V) => IMap<K, U>): IMap<K, U> {
+  flatMap<U>(f: (value: V) => _Map_<K, U>): _Map_<K, U> {
     const newEntries: [K, U][] = []
     for (const [key, value] of this.values.entries()) {
       const mapped = f(value)
@@ -72,21 +75,21 @@ export class Map<K, V> implements IMap<K, V> {
     return new Seq(this.entries).reduceRight(f)
   }
 
-  foldLeft<B>(z: B): (op: (b: B, a: ITuple<[K, V]>) => B) => B {
+  foldLeft<B>(z: B): (op: (b: B, a: _Tuple_<[K, V]>) => B) => B {
     const iterables = new Seq(this.entries)
-    return (f: (b: B, a: ITuple<[K, V]>) => B) => {
+    return (f: (b: B, a: _Tuple_<[K, V]>) => B) => {
       return iterables.foldLeft(z)(f)
     }
   }
 
-  foldRight<B>(z: B): (op: (a: ITuple<[K, V]>, b: B) => B) => B {
+  foldRight<B>(z: B): (op: (a: _Tuple_<[K, V]>, b: B) => B) => B {
     const iterables = new Seq(this.entries)
-    return (f: (a: ITuple<[K, V]>, b: B) => B) => {
+    return (f: (a: _Tuple_<[K, V]>, b: B) => B) => {
       return iterables.foldRight(z)(f)
     }
   }
 
-  get(key: K): Option<V> {
+  get(key: K): _Option_<V> {
     return option(this.values.get(key))
   }
 
@@ -98,16 +101,16 @@ export class Map<K, V> implements IMap<K, V> {
     return this.values.size === 0
   }
 
-  orElse(key: K, alternative: Option<V>): Option<V> {
+  orElse(key: K, alternative: _Option_<V>): _Option_<V> {
     const v = option(this.values.get(key))
     return alternative
   }
 
-  toList(): IList<Tuple<[K, V]>> {
+  toList(): _List_<Tuple<[K, V]>> {
     return new List(this.entries)
   }
 
-  toSet(): ISet<Tuple<[K, V]>> {
+  toSet(): _Set_<Tuple<[K, V]>> {
     return new Set(this.entries)
   }
 

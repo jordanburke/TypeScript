@@ -1,6 +1,6 @@
-import { IFunctor, Type } from "./functor"
+import { _Functor_, Type } from "./functor"
 
-export interface ITraversable<A extends Type> extends IFunctor<A> {
+export type _Traversable_<A extends Type> = _Functor_<A> & {
   get size(): number
 
   get isEmpty(): boolean

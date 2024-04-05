@@ -1,23 +1,26 @@
-import { IFunctor, Type } from "../functor"
-import { ITraversable } from "../index"
-import { IIterable } from "../iterable"
+import { _Functor_, Type } from "../functor"
+import { _Traversable_, _Try_ } from "../index"
+import { _Iterable_ } from "../iterable"
 import { Seq } from "../iterable/Seq"
 
-export interface Option<T extends Type> extends IFunctor<T>, ITraversable<T> {
+export type _Option_<T extends Type> = {
   get(): T
 
   getOrElse(defaultValue: T): T
 
-  orElse(alternative: Option<T>): Option<T>
+  orElse(alternative: _Option_<T>): _Option_<T>
 
-  map<U extends Type>(f: (value: T) => U): Option<U>
+  map<U extends Type>(f: (value: T) => U): _Option_<U>
 
-  flatMap<U extends Type>(f: (value: T) => Option<U>): Option<U>
+  flatMap<U extends Type>(f: (value: T) => _Option_<U>): _Option_<U>
 
-  toList(): IIterable<T>
-}
+  toList(): _Iterable_<T>
 
-export class Some<A extends Type> implements Option<A> {
+  valueOf(): Object
+} & _Traversable_<T> &
+  _Functor_<T>
+
+export class Some<A extends Type> implements _Option_<A> {
   constructor(private value: A) {}
 
   get isEmpty(): boolean {
@@ -32,15 +35,15 @@ export class Some<A extends Type> implements Option<A> {
     return this.value
   }
 
-  orElse(alternative: Option<A>): Option<A> {
+  orElse(alternative: _Option_<A>): _Option_<A> {
     return this
   }
 
-  map<U extends Type>(f: (value: A) => U): Option<U> {
+  map<U extends Type>(f: (value: A) => U): _Option_<U> {
     return new Some(f(this.value))
   }
 
-  flatMap<U extends Type>(f: (value: A) => Option<U>): Option<U> {
+  flatMap<U extends Type>(f: (value: A) => _Option_<U>): _Option_<U> {
     return f(this.value)
   }
 
@@ -64,7 +67,7 @@ export class Some<A extends Type> implements Option<A> {
     }
   }
 
-  toList(): IIterable<A> {
+  toList(): _Iterable_<A> {
     return new Seq<A>([this.value])
   }
 
@@ -77,7 +80,7 @@ export class Some<A extends Type> implements Option<A> {
   }
 }
 
-export class None<A extends Type> implements Option<A> {
+export class None<A extends Type> implements _Option_<A> {
   get isEmpty(): boolean {
     return true
   }
@@ -90,15 +93,15 @@ export class None<A extends Type> implements Option<A> {
     return defaultValue
   }
 
-  orElse(alternative: Option<A>): Option<A> {
+  orElse(alternative: _Option_<A>): _Option_<A> {
     return alternative
   }
 
-  map<U extends Type>(f: (value: A) => U): Option<U> {
+  map<U extends Type>(f: (value: A) => U): _Option_<U> {
     return new None<U>()
   }
 
-  flatMap<U extends Type>(f: (value: A) => Option<U>): Option<U> {
+  flatMap<U extends Type>(f: (value: A) => _Option_<U>): _Option_<U> {
     return new None<U>()
   }
 
@@ -122,7 +125,7 @@ export class None<A extends Type> implements Option<A> {
     }
   }
 
-  toList(): IIterable<A> {
+  toList(): _Iterable_<A> {
     return new Seq<A>()
   }
 

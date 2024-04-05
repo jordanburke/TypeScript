@@ -1,16 +1,13 @@
-import { option } from "../../src/option"
-import { Option } from "../../src/option/Option"
+import { None, option } from "../../src"
+import { _Option_ } from "../../src"
 
 describe("Option", () => {
   beforeEach(async () => {
     // Nothing
   })
 
-  const something: Option<string> = option<string>("hello")
-  const nothing: Option<string> = option()
-
-  // console.log(result1); // Some { value: 246 }
-  // console.log(result2); // None
+  const something: _Option_<string> = option<string>("hello")
+  const nothing: _Option_<string> = option()
 
   it("parse valid number", () => {
     expect(something.getOrElse("world")).toBe("hello")
@@ -25,6 +22,6 @@ describe("Option", () => {
   })
 
   it("map on None", () => {
-    expect(nothing.map(() => 10)).toEqual({})
+    expect(nothing.map(() => 10)).toEqual(new None())
   })
 })

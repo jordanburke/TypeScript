@@ -1,6 +1,6 @@
-import { Map } from "../../src/map"
-import { Some, None } from "../../src/option"
-import { Tuple } from "../../src/tuple"
+import { Map } from "../../src"
+import { Some, None } from "../../src"
+import { Tuple } from "../../src"
 
 describe("Map", () => {
   let map: Map<string, number>

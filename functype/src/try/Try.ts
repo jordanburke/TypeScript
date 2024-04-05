@@ -11,29 +11,38 @@ export type _Try_<T> = {
 
   toEither(): Either<Error, T>
 }
-export const Try = <T>(value: T | null, error: Error | null): _Try_<T> => {
-  const isSuccess = () => error === null
-  const isFailure = () => error !== null
-  const getOrElse = (defaultValue: T) => (isSuccess() ? (value as T) : defaultValue)
-  const orElse = (alternative: _Try_<T>) => (isSuccess() ? Try(value, error) : alternative)
-  const toEither = (): Either<Error, T> =>
-    isSuccess() ? new Right<Error, T>(value as T) : new Left<Error, T>(error as Error)
 
-  return {
-    isSuccess: isSuccess,
-    isFailure: isFailure,
-    getOrElse: getOrElse,
-    orElse: orElse,
-    toEither: toEither,
-  }
-}
+export class Try<T> implements _Try_<T> {
+  private constructor(
+    private readonly value: T | null,
+    private readonly error: Error | null,
+  ) {}
 
-export const $Try = {
-  of<T>(f: () => T): _Try_<T> {
+  static of<T>(f: () => T): _Try_<T> {
     try {
-      return Try<T>(f(), null)
+      return new Try<T>(f(), null)
     } catch (error) {
-      return Try<T>(null, error instanceof Error ? error : new Error(String(error)))
+      return new Try<T>(null, error instanceof Error ? error : new Error(String(error)))
     }
-  },
+  }
+
+  isSuccess(): boolean {
+    return this.error === null
+  }
+
+  isFailure(): boolean {
+    return this.error !== null
+  }
+
+  getOrElse(defaultValue: T): T {
+    return this.isSuccess() ? (this.value as T) : defaultValue
+  }
+
+  orElse(alternative: _Try_<T>): _Try_<T> {
+    return this.isSuccess() ? this : alternative
+  }
+
+  toEither(): Either<Error, T> {
+    return this.isSuccess() ? new Right<Error, T>(this.value as T) : new Left<Error, T>(this.error as Error)
+  }
 }

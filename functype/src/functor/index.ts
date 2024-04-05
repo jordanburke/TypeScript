@@ -4,20 +4,20 @@ export type ArrayType = SingleType[]
 
 export type Type = SingleType | ArrayType
 
-export interface IAbstractFunctor<A extends Type> {
-  map(f: (value: A) => Type): IAbstractFunctor<Type>
+export type _AbstractFunctor_<A extends Type> = {
+  map(f: (value: A) => Type): _AbstractFunctor_<Type>
 
-  flatMap(f: (value: A) => IAbstractFunctor<Type>): IAbstractFunctor<Type>
+  flatMap(f: (value: A) => _AbstractFunctor_<Type>): _AbstractFunctor_<Type>
 }
 
-export interface IFunctor<A extends Type> extends IAbstractFunctor<A> {
-  map<B extends Type>(f: (value: A) => B): IFunctor<B>
+export type _Functor_<A extends Type> = _AbstractFunctor_<A> & {
+  map<B extends Type>(f: (value: A) => B): _Functor_<B>
 
-  flatMap<B extends Type>(f: (value: A) => IFunctor<B>): IFunctor<B>
+  flatMap<B extends Type>(f: (value: A) => _Functor_<B>): _Functor_<B>
 }
 
-export interface IArrayFunctor<A extends ArrayType> extends IAbstractFunctor<A> {
-  map<U extends ArrayType>(f: (value: A) => U): IArrayFunctor<U>
+export type _ArrayFunctor_<A extends ArrayType> = _AbstractFunctor_<A> & {
+  map<U extends ArrayType>(f: (value: A) => U): _ArrayFunctor_<U>
 
-  flatMap<U extends ArrayType>(f: (value: A) => IArrayFunctor<U>): IArrayFunctor<U>
+  flatMap<U extends ArrayType>(f: (value: A) => _ArrayFunctor_<U>): _ArrayFunctor_<U>
 }

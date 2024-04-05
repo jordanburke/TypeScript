@@ -1,16 +1,16 @@
-import { ArrayType, IArrayFunctor } from "../functor"
+import { ArrayType, _ArrayFunctor_ } from "../functor"
 
-export interface ITuple<T extends ArrayType> extends IArrayFunctor<T> {
+export type _Tuple_<T extends ArrayType> = _ArrayFunctor_<T> & {
   get(index: number): T[number]
 
   getAs<U>(index: number, f?: (item: T) => boolean): U
 
-  map<U extends any[]>(f: (value: T) => U): ITuple<U>
+  map<U extends any[]>(f: (value: T) => U): _Tuple_<U>
 
-  flatMap<U extends any[]>(f: (value: T) => ITuple<U>): ITuple<U>
+  flatMap<U extends any[]>(f: (value: T) => _Tuple_<U>): _Tuple_<U>
 }
 
-export class Tuple<T extends ArrayType> implements ITuple<T> {
+export class Tuple<T extends ArrayType> implements _Tuple_<T> {
   constructor(private readonly values: T) {}
 
   map<U extends ArrayType>(f: (value: T) => U): Tuple<U> {

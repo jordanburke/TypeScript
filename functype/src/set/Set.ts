@@ -1,15 +1,16 @@
 import { ESSet, IESSet } from "./shim"
-import { IIterable, Seq } from "../iterable"
-import { IList, List } from "../list"
-import { ICollection } from "../collections"
+import { _Iterable_, Seq } from "../iterable"
+import { _List_, List } from "../list"
+import { _Collection } from "../collections"
 import { isIterable } from "../util/isIterable"
 
-export interface ISet<T> extends IIterable<T>, ICollection<T> {
+export type _Set_<T> = {
   has(value: T): boolean
-}
+} & _Iterable_<T> &
+  _Collection<T>
 
-export class Set<A> extends Seq<A> implements ISet<A> {
-  constructor(iterable?: Iterable<A> | IIterable<A>) {
+export class Set<A> extends Seq<A> implements _Set_<A> {
+  constructor(iterable?: Iterable<A> | _Iterable_<A>) {
     if (isIterable(iterable)) {
       super(new ESSet<A>(iterable))
     } else {
@@ -38,15 +39,15 @@ export class Set<A> extends Seq<A> implements ISet<A> {
     return new Set(super.map(f))
   }
 
-  flatMap<B>(f: (a: A) => IIterable<B>): Set<B> {
+  flatMap<B>(f: (a: A) => _Iterable_<B>): Set<B> {
     return new Set(super.flatMap(f))
   }
 
-  toList(): IList<A> {
+  toList(): _List_<A> {
     return new List(this)
   }
 
-  toSet(): ISet<A> {
+  toSet(): _Set_<A> {
     return this
   }
 

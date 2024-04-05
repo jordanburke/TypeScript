@@ -1,1 +1,1 @@
-export { Tuple, ITuple } from "./Tuple"
+export { Tuple, _Tuple_ } from "./Tuple"

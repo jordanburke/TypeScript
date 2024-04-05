@@ -1,22 +1,22 @@
-import { none, Option, some } from "../option"
+import { none, _Option_, some } from "../option"
 import { List } from "../list"
-import { IFunctor } from "../functor"
+import { _Functor_ } from "../functor"
 
-export interface Either<L, R> extends IFunctor<R> {
+export type Either<L, R> = {
   value: L | R
 
-  isLeft(): this is Left<L, R>
+  isLeft(): boolean
 
-  isRight(): this is Right<L, R>
+  isRight(): boolean
 
   map<U>(f: (value: R) => U): Either<L, U>
 
   flatMap<U>(f: (value: R) => Either<L, U>): Either<L, U>
 
-  toOption(): Option<R>
+  toOption(): _Option_<R>
 
   toList(): List<R>
-}
+} & _Functor_<R>
 
 export class Right<L, R> implements Either<L, R> {
   constructor(public value: R) {}
@@ -37,7 +37,7 @@ export class Right<L, R> implements Either<L, R> {
     return f(this.value)
   }
 
-  toOption(): Option<R> {
+  toOption(): _Option_<R> {
     return some<R>(this.value)
   }
 
@@ -65,7 +65,7 @@ export class Left<L, R> implements Either<L, R> {
     return new Left<L, U>(this.value)
   }
 
-  toOption(): Option<R> {
+  toOption(): _Option_<R> {
     return none<R>()
   }
 

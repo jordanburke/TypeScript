@@ -1,10 +1,10 @@
-import { ISet } from "../set"
-import { IList } from "../list"
+import { _Set_ } from "../set"
+import { _List_ } from "../list"
 
-export interface IConverters<A> {
-  toList(): IList<A>
-  toSet(): ISet<A>
+export type IConverters<A> = {
+  toList(): _List_<A>
+  toSet(): _Set_<A>
   toString(): string
 }
 
-export interface ICollection<A> extends IConverters<A> {}
+export type _Collection<A> = IConverters<A>

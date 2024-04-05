@@ -1,10 +1,10 @@
 import { none, option } from "../option"
-import { IIterable } from "./index"
-import { Option } from "../option"
+import { _Iterable_ } from "./index"
+import { _Option_ } from "../option"
 import { isIterable } from "../util/isIterable"
-export class Seq<A> implements IIterable<A> {
+export class Seq<A> implements _Iterable_<A> {
   protected readonly values: Iterable<A>
-  constructor(values?: Iterable<A> | IIterable<A>) {
+  constructor(values?: Iterable<A> | _Iterable_<A>) {
     if (isIterable(values)) {
       this.values = values
     } else if (values instanceof Seq) {
@@ -20,11 +20,11 @@ export class Seq<A> implements IIterable<A> {
     return this.toArray().length
   }
 
-  map<B>(f: (a: A) => B): IIterable<B> {
+  map<B>(f: (a: A) => B): _Iterable_<B> {
     return new Seq(this.toArray().map(f))
   }
 
-  flatMap<B>(f: (a: A) => IIterable<B>): IIterable<B> {
+  flatMap<B>(f: (a: A) => _Iterable_<B>): _Iterable_<B> {
     const tempArray: B[] = []
     for (const item of this.values) {
       const mappedList = f(item)
@@ -59,15 +59,15 @@ export class Seq<A> implements IIterable<A> {
     return !this.find(p).isEmpty
   }
 
-  filter(p: (a: A) => boolean): IIterable<A> {
+  filter(p: (a: A) => boolean): _Iterable_<A> {
     return new Seq<A>(this.toArray().filter(p))
   }
 
-  filterNot(p: (a: A) => boolean): IIterable<A> {
+  filterNot(p: (a: A) => boolean): _Iterable_<A> {
     return new Seq<A>(this.toArray().filter((x) => !p(x)))
   }
 
-  find(p: (a: A) => boolean): Option<A> {
+  find(p: (a: A) => boolean): _Option_<A> {
     const result = this.toArray().find(p)
     return option(result)
   }
@@ -76,7 +76,7 @@ export class Seq<A> implements IIterable<A> {
     return this.values[0]
   }
 
-  get headOption(): Option<A> {
+  get headOption(): _Option_<A> {
     if (this.isEmpty) {
       return option(this.head)
     } else {
