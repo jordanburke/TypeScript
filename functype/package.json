@@ -1,6 +1,6 @@
 {
   "name": "functype",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A smallish functional library for TypeScript",
   "author": "jordan.burke@gmail.com",
   "license": "MIT",
@@ -19,7 +19,7 @@
     "test:cov": "jest --coverage"
   },
   "devDependencies": {
-    "@types/node": "^20.12.4",
+    "@types/node": "^20.12.8",
     "@typescript-eslint/eslint-plugin": "^7.5.0",
     "@typescript-eslint/parser": "^7.5.0",
     "@types/jest": "29.5.12",
@@ -35,7 +35,7 @@
     "tsup": "^8.0.2",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.4"
+    "typescript": "^5.4.5"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
