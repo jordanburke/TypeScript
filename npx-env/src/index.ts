@@ -36,7 +36,7 @@ Examples:
   npx-env npm start
 
 Use case: When npx doesn't pick up system environment variables properly.
-Variable expansion: Use $VAR or \${VAR} in MCP config env values.
+Variable expansion: Use $VAR, \${VAR}, or %VAR% in MCP config env values.
 `);
       process.exit(0);
     } else {
@@ -53,11 +53,16 @@ Variable expansion: Use $VAR or \${VAR} in MCP config env values.
   return parsed;
 };
 
-const expandEnvironmentVariables = (value: string): string => {
-  return value.replace(/\$\{([^}]+)\}|\$([A-Za-z_][A-Za-z0-9_]*)/g, (match, braced, unbraced) => {
-    const varName = braced || unbraced;
-    return process.env[varName] || match;
-  });
+const expandEnvironmentVariables = (value: string, envContext: Record<string, string | undefined> = process.env): string => {
+  // Handle both Unix ($VAR, ${VAR}) and Windows (%VAR%) style variables
+  return value
+    .replace(/\$\{([^}]+)\}|\$([A-Za-z_][A-Za-z0-9_]*)/g, (match, braced, unbraced) => {
+      const varName = braced || unbraced;
+      return envContext[varName] || process.env[varName] || match;
+    })
+    .replace(/%([A-Za-z_][A-Za-z0-9_]*)%/g, (match, varName) => {
+      return envContext[varName] || process.env[varName] || match;
+    });
 };
 
 const runCommand = (command: string[], verbose: boolean = false, expandVars: boolean = false): Promise<number> => {
@@ -68,16 +73,29 @@ const runCommand = (command: string[], verbose: boolean = false, expandVars: boo
     
     // If expand-vars is enabled, expand environment variables in all env values
     if (expandVars) {
-      Object.keys(childEnv).forEach(key => {
-        if (childEnv[key]) {
-          const original = childEnv[key]!;
-          const expanded = expandEnvironmentVariables(original);
-          if (original !== expanded && verbose) {
-            console.log(`Expanded ${key}: ${original} → ${expanded}`);
+      // First pass: expand variables that reference other variables in the same env
+      let hasChanges = true;
+      let iterations = 0;
+      const maxIterations = 5; // Prevent infinite loops
+      
+      while (hasChanges && iterations < maxIterations) {
+        hasChanges = false;
+        iterations++;
+        
+        Object.keys(childEnv).forEach(key => {
+          if (childEnv[key]) {
+            const original = childEnv[key]!;
+            const expanded = expandEnvironmentVariables(original, childEnv);
+            if (original !== expanded) {
+              if (verbose && iterations === 1) {
+                console.log(`Expanded ${key}: ${original} → ${expanded}`);
+              }
+              childEnv[key] = expanded;
+              hasChanges = true;
+            }
           }
-          childEnv[key] = expanded;
-        }
-      });
+        });
+      }
     }
     
     if (verbose) {
