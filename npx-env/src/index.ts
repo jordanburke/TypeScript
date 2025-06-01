@@ -54,6 +54,16 @@ Environment setting: Use 'ENV:VAR_NAME=value' syntax to set environment variable
   return parsed
 }
 
+const convertWindowsPathToWSL = (path: string): string => {
+  // Convert Windows paths like C:\Users\... to WSL paths like /mnt/c/Users/...
+  if (path.match(/^[A-Za-z]:\\/)) {
+    const drive = path.charAt(0).toLowerCase()
+    const restOfPath = path.slice(3).replace(/\\/g, '/')
+    return `/mnt/${drive}/${restOfPath}`
+  }
+  return path
+}
+
 const expandEnvironmentVariables = (
   value: string,
   envContext: Record<string, string | undefined> = process.env,
@@ -62,10 +72,24 @@ const expandEnvironmentVariables = (
   return value
     .replace(/\$\{([^}]+)\}|\$([A-Za-z_][A-Za-z0-9_]*)/g, (match, braced, unbraced) => {
       const varName = braced || unbraced
-      return envContext[varName] || process.env[varName] || match
+      let envValue = envContext[varName] || process.env[varName]
+      
+      // Convert Windows paths to WSL paths if running in WSL
+      if (envValue && process.platform === 'linux' && process.env.WSL_DISTRO_NAME) {
+        envValue = convertWindowsPathToWSL(envValue)
+      }
+      
+      return envValue || match
     })
     .replace(/%([A-Za-z_][A-Za-z0-9_]*)%/g, (match, varName) => {
-      return envContext[varName] || process.env[varName] || match
+      let envValue = envContext[varName] || process.env[varName]
+      
+      // Convert Windows paths to WSL paths if running in WSL
+      if (envValue && process.platform === 'linux' && process.env.WSL_DISTRO_NAME) {
+        envValue = convertWindowsPathToWSL(envValue)
+      }
+      
+      return envValue || match
     })
 }
 
