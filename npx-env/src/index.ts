@@ -91,7 +91,7 @@ const runCommand = (command: string[], verbose: boolean = false, expandVars: boo
             const expandedValue = expandEnvironmentVariables(envValue, childEnv)
             childEnv[envVar] = expandedValue
             if (verbose) {
-              console.log(`Set env var: ${envVar}=${expandedValue}`)
+              console.error(`Set env var: ${envVar}=${expandedValue}`)
             }
           }
         } else {
@@ -104,7 +104,7 @@ const runCommand = (command: string[], verbose: boolean = false, expandVars: boo
       args = args.map((arg) => {
         const expanded = expandEnvironmentVariables(arg, childEnv)
         if (arg !== expanded && verbose) {
-          console.log(`Expanded arg: ${arg} → ${expanded}`)
+          console.error(`Expanded arg: ${arg} → ${expanded}`)
         }
         return expanded
       })
@@ -124,7 +124,7 @@ const runCommand = (command: string[], verbose: boolean = false, expandVars: boo
             const expanded = expandEnvironmentVariables(original, childEnv)
             if (original !== expanded) {
               if (verbose && iterations === 1) {
-                console.log(`Expanded env ${key}: ${original} → ${expanded}`)
+                console.error(`Expanded env ${key}: ${original} → ${expanded}`)
               }
               childEnv[key] = expanded
               hasChanges = true
@@ -135,14 +135,14 @@ const runCommand = (command: string[], verbose: boolean = false, expandVars: boo
     }
 
     if (verbose) {
-      console.log(`Running: ${cmd} ${args.join(" ")}`)
-      console.log("Environment variables:")
+      console.error(`Running: ${cmd} ${args.join(" ")}`)
+      console.error("Environment variables:")
       Object.entries(childEnv)
         .filter(
           ([key]) => key.includes("MEMORY") || key.includes("API") || key.includes("TOKEN") || key.includes("KEY"),
         )
         .forEach(([key, value]) => {
-          console.log(`  ${key}=${value}`)
+          console.error(`  ${key}=${value}`)
         })
     }
 
